@@ -1,6 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
+  head: {
+    script: [
+      {
+        src: 'https://code.jquery.com/jquery-3.5.1.min.js',
+      },
+    ],
+  },
 }
-
-module.exports = nextConfig
