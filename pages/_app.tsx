@@ -1,9 +1,21 @@
+// antd
 import "antd/dist/antd.css";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/lib/locale/zh_CN";
+import moment from "moment";
+import "moment/locale/zh-cn";
+// global
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+moment.locale("zh-cn");
 
-export default MyApp;
+const App = ({ Component, pageProps }: AppProps) => {
+  return (
+    <ConfigProvider locale={zhCN}>
+      <Component {...pageProps} locale={zhCN} />;
+    </ConfigProvider>
+  );
+};
+
+export default App;

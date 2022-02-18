@@ -3,7 +3,7 @@ import { DatePicker, Button } from "antd";
 const About: NextPage = () => {
   return (
     <div>
-      <Button>Test</Button>
+      <Button>测试</Button>
       <DatePicker />
     </div>
   );
