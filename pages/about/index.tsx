@@ -1,6 +1,12 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
+import { DatePicker, Button } from "antd";
 const About: NextPage = () => {
-  return <div>About</div>
-}
+  return (
+    <div>
+      <Button>Test</Button>
+      <DatePicker />
+    </div>
+  );
+};
 
-export default About
+export default About;
