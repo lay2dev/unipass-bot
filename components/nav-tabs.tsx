@@ -2,7 +2,6 @@ import * as React from 'react'
 import { useRouter } from 'next/router'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
-import css from './nav-tabs.module.scss'
 export default function NavTabs() {
   const router = useRouter()
   const [tab, setTab] = React.useState(0)
@@ -20,7 +19,16 @@ export default function NavTabs() {
       path: '/test',
     },
   ]
-  const tabList = tabs.map((e, i) => <Tab key={i} className={css.tab} label={e.label} />)
+  const tabList = tabs.map((e, i) => (
+    <Tab
+      key={i}
+      sx={{
+        alignItems: 'flex-start',
+        textTransform: 'none',
+      }}
+      label={e.label}
+    />
+  ))
   const bindTab = (event: React.SyntheticEvent, i: number) => {
     setTab(i)
     const tab = tabs[i]
