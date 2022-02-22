@@ -1,0 +1,38 @@
+.role {
+  h4 {
+    margin-top: 0;
+  }
+  .roleInfo {
+    display: flex;
+    align-items: center;
+    h3 {
+      margin-right: 20px;
+    }
+    .switch {
+      margin-left: auto;
+    }
+  }
+  .roleTip {
+    margin-top: 0;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background: #e0e6ec;
+    border-radius: 4px;
+    list-style: auto;
+    color: #7a8895;
+  }
+  h5 {
+    color: #7a8895;
+  }
+  .newRequirement {
+    padding: 20px;
+    margin-top: 40px;
+    border: 1px dashed #7a8895;
+    border-radius: 10px;
+  }
+  .save {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+}

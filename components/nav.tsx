@@ -22,7 +22,7 @@ export default function Nav() {
       <h1>Server</h1>
       <Select value={server} onChange={bindServer} fullWidth>
         <MenuItem value="UniPass">UniPass</MenuItem>
-        <MenuItem value="SeaTeam">Adobe</MenuItem>
+        <MenuItem value="Aven">Aven</MenuItem>
         <MenuItem value="+">+ Add new server</MenuItem>
       </Select>
       <h1>Management</h1>
