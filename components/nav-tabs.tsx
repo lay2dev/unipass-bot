@@ -1,13 +1,30 @@
 import * as React from 'react'
+import { useRouter } from 'next/router'
 import Tabs from '@mui/material/Tabs'
 import Tab from '@mui/material/Tab'
 import css from './nav-tabs.module.scss'
-export default function VerticalTabs() {
+export default function NavTabs() {
+  const router = useRouter()
   const [tab, setTab] = React.useState(0)
-  const tabs = ['Give Roles', 'Channel Manage', 'Test Page']
-  const tabList = tabs.map((e, i) => <Tab key={i} className={css.tab} label={e} />)
-  const bindTab = (event: React.SyntheticEvent, v: number) => {
-    setTab(v)
+  const tabs = [
+    {
+      label: 'Give Roles',
+      path: '/',
+    },
+    {
+      label: 'Channel Manage',
+      path: '/about',
+    },
+    {
+      label: 'Test Page',
+      path: '/test',
+    },
+  ]
+  const tabList = tabs.map((e, i) => <Tab key={i} className={css.tab} label={e.label} />)
+  const bindTab = (event: React.SyntheticEvent, i: number) => {
+    setTab(i)
+    const tab = tabs[i]
+    router.push(tab.path)
   }
   return (
     <Tabs orientation="vertical" variant="scrollable" value={tab} onChange={bindTab}>

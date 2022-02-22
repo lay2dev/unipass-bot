@@ -3,7 +3,7 @@ import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import NavTabs from './nav-tabs'
 
-const Nav = () => {
+export default function Nav() {
   // server select
   const [server, setServer] = React.useState('UniPass')
   const bindServer = (event: SelectChangeEvent) => {
@@ -30,4 +30,3 @@ const Nav = () => {
     </nav>
   )
 }
-export default Nav
