@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Link as RouterLink } from 'next/link'
+import NextLink from 'next/link'
 // material
 import { alpha } from '@mui/material/styles'
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material'
@@ -85,24 +85,24 @@ export default function AccountPopover() {
         <Divider sx={{ my: 1 }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem
-            key={option.label}
-            to={option.linkTo}
-            component={RouterLink}
-            onClick={handleClose}
-            sx={{ typography: 'body2', py: 1, px: 2.5 }}
-          >
-            <SeaIcon
-              icon={option.icon}
-              sx={{
-                mr: 2,
-                width: 24,
-                height: 24,
-              }}
-            />
+          <NextLink href={option.linkTo} key={option.label} passHref>
+            <MenuItem
+              to={option.linkTo}
+              onClick={handleClose}
+              sx={{ typography: 'body2', py: 1, px: 2.5 }}
+            >
+              <SeaIcon
+                icon={option.icon}
+                sx={{
+                  mr: 2,
+                  width: 24,
+                  height: 24,
+                }}
+              />
 
-            {option.label}
-          </MenuItem>
+              {option.label}
+            </MenuItem>
+          </NextLink>
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>

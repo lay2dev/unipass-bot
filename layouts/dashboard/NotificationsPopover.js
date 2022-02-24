@@ -2,7 +2,8 @@ import { faker } from '@faker-js/faker'
 import PropTypes from 'prop-types'
 import { noCase } from 'change-case'
 import { useRef, useState } from 'react'
-import { Link as RouterLink } from 'next/link'
+import NextLink from 'next/link'
+import Image from 'next/image'
 import { set, sub, formatDistanceToNow } from 'date-fns'
 // material
 import { alpha } from '@mui/material/styles'
@@ -88,30 +89,38 @@ function renderContent(notification) {
 
   if (notification.type === 'order_placed') {
     return {
-      avatar: <img alt={notification.title} src="/icons/ic_notification_package.svg" />,
+      avatar: (
+        <Image alt={notification.title} layout="fill" src="/icons/ic_notification_package.svg" />
+      ),
       title,
     }
   }
   if (notification.type === 'order_shipped') {
     return {
-      avatar: <img alt={notification.title} src="/icons/ic_notification_shipping.svg" />,
+      avatar: (
+        <Image alt={notification.title} layout="fill" src="/icons/ic_notification_shipping.svg" />
+      ),
       title,
     }
   }
   if (notification.type === 'mail') {
     return {
-      avatar: <img alt={notification.title} src="/icons/ic_notification_mail.svg" />,
+      avatar: (
+        <Image alt={notification.title} layout="fill" src="/icons/ic_notification_mail.svg" />
+      ),
       title,
     }
   }
   if (notification.type === 'chat_message') {
     return {
-      avatar: <img alt={notification.title} src="/icons/ic_notification_chat.svg" />,
+      avatar: (
+        <Image alt={notification.title} layout="fill" src="/icons/ic_notification_chat.svg" />
+      ),
       title,
     }
   }
   return {
-    avatar: <img alt={notification.title} src={notification.avatar} />,
+    avatar: <Image alt={notification.title} layout="fill" src={notification.avatar} />,
     title,
   }
 }
@@ -124,40 +133,40 @@ function NotificationItem({ notification }) {
   const { avatar, title } = renderContent(notification)
 
   return (
-    <ListItemButton
-      to="#"
-      disableGutters
-      component={RouterLink}
-      sx={{
-        py: 1.5,
-        px: 2.5,
-        mt: '1px',
-        ...(notification.isUnRead && {
-          bgcolor: 'action.selected',
-        }),
-      }}
-    >
-      <ListItemAvatar>
-        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={
-          <Typography
-            variant="caption"
-            sx={{
-              mt: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              color: 'text.disabled',
-            }}
-          >
-            <SeaIcon icon="eva:clock-fill" sx={{ mr: 0.5, width: 16, height: 16 }} />
-            {formatDistanceToNow(new Date(notification.createdAt))}
-          </Typography>
-        }
-      />
-    </ListItemButton>
+    <NextLink href="#" passHref>
+      <ListItemButton
+        disableGutters
+        sx={{
+          py: 1.5,
+          px: 2.5,
+          mt: '1px',
+          ...(notification.isUnRead && {
+            bgcolor: 'action.selected',
+          }),
+        }}
+      >
+        <ListItemAvatar>
+          <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={title}
+          secondary={
+            <Typography
+              variant="caption"
+              sx={{
+                mt: 0.5,
+                display: 'flex',
+                alignItems: 'center',
+                color: 'text.disabled',
+              }}
+            >
+              <SeaIcon icon="eva:clock-fill" sx={{ mr: 0.5, width: 16, height: 16 }} />
+              {formatDistanceToNow(new Date(notification.createdAt))}
+            </Typography>
+          }
+        />
+      </ListItemButton>
+    </NextLink>
   )
 }
 
@@ -259,9 +268,11 @@ export default function NotificationsPopover() {
         <Divider />
 
         <Box sx={{ p: 1 }}>
-          <Button fullWidth disableRipple component={RouterLink} to="#">
-            View All
-          </Button>
+          <NextLink href="#" passHref>
+            <Button fullWidth disableRipple>
+              View All
+            </Button>
+          </NextLink>
         </Box>
       </MenuPopover>
     </>

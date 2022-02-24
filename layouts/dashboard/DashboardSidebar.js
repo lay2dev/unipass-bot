@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 // material
 import { styled } from '@mui/material/styles'
-import { Link as RouterLink } from 'next/link'
+import NextLink from 'next/link'
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material'
 import account from './account'
 // hooks
@@ -66,19 +66,21 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none" component={RouterLink} href="#">
-          <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
-              </Typography>
-            </Box>
-          </AccountStyle>
-        </Link>
+        <NextLink href="/" passHref>
+          <Link underline="none" href="#">
+            <AccountStyle>
+              <Avatar src={account.photoURL} alt="photoURL" />
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+                  {account.displayName}
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {account.role}
+                </Typography>
+              </Box>
+            </AccountStyle>
+          </Link>
+        </NextLink>
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
