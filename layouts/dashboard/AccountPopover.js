@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-// import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'next/link'
 // material
 import { alpha } from '@mui/material/styles'
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material'
@@ -88,7 +88,7 @@ export default function AccountPopover() {
           <MenuItem
             key={option.label}
             to={option.linkTo}
-            // component={RouterLink}
+            component={RouterLink}
             onClick={handleClose}
             sx={{ typography: 'body2', py: 1, px: 2.5 }}
           >

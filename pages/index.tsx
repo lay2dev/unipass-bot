@@ -25,7 +25,7 @@ const Page: NextPage = () => {
         </ul>
         <div>
           <h3>Set Role</h3>
-          <Select defaultValue="OG User">
+          <Select size="small" defaultValue="OG User">
             <MenuItem value="OG User">
               <SeaRole color="#c4505e" text="OG User" />
             </MenuItem>
@@ -39,42 +39,47 @@ const Page: NextPage = () => {
           <h3>Set Requirement</h3>
           <Paper elevation={12} sx={{ padding: '20px' }}>
             <h4>UniPass requirement</h4>
-            <Select sx={{ marginLeft: '6px' }} defaultValue="Level">
+            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Level">
               <MenuItem value="Level">Level</MenuItem>
             </Select>
-            <Select sx={{ marginLeft: '6px' }} defaultValue=">=">
+            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
               <MenuItem value=">=">{'>='}</MenuItem>
               <MenuItem value="<=">{'<='}</MenuItem>
               <MenuItem value="=">{'='}</MenuItem>
               <MenuItem value=">">{'>'}</MenuItem>
               <MenuItem value="<">{'<'}</MenuItem>
             </Select>
-            <Select sx={{ marginLeft: '6px' }} defaultValue="Lv4">
+            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Lv4">
               <MenuItem value="Lv4">{'Lv4'}</MenuItem>
             </Select>
           </Paper>
           <Paper elevation={12} sx={{ padding: '20px', marginTop: '20px' }}>
             <h4>Asset requirement</h4>
             <h5 className={css.h5}>Contract address</h5>
-            <Select sx={{ marginRight: '6px' }} defaultValue="Ethereum">
+            <Select size="small" sx={{ marginRight: '6px' }} defaultValue="Ethereum">
               <MenuItem value="Ethereum">Ethereum</MenuItem>
               <MenuItem value="BTC">BTC</MenuItem>
             </Select>
-            <TextField sx={{ width: '500px' }} variant="outlined" placeholder="Contract address" />
+            <TextField
+              size="small"
+              sx={{ width: '500px' }}
+              variant="outlined"
+              placeholder="Contract address"
+            />
             <Button sx={{ marginLeft: '6px' }}>NFT</Button>
             <h5 className={css.h5}>Amount</h5>
-            <Select defaultValue="Amount">
+            <Select size="small" defaultValue="Amount">
               <MenuItem value="Amount">Amount</MenuItem>
               <MenuItem value="CKB">CKB</MenuItem>
             </Select>
-            <Select sx={{ marginLeft: '6px' }} defaultValue=">=">
+            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
               <MenuItem value=">=">{'>='}</MenuItem>
               <MenuItem value="<=">{'<='}</MenuItem>
               <MenuItem value="=">{'='}</MenuItem>
               <MenuItem value=">">{'>'}</MenuItem>
               <MenuItem value="<">{'<'}</MenuItem>
             </Select>
-            <TextField sx={{ marginLeft: '6px' }} defaultValue={1} type="number" />
+            <TextField size="small" sx={{ marginLeft: '6px' }} defaultValue={1} type="number" />
           </Paper>
           <div className={css.newRequirement}>
             <h4>Add a new requirement</h4>

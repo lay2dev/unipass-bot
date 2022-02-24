@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import PropTypes from 'prop-types'
 import { noCase } from 'change-case'
 import { useRef, useState } from 'react'
-// import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink } from 'next/link'
 import { set, sub, formatDistanceToNow } from 'date-fns'
 // material
 import { alpha } from '@mui/material/styles'
@@ -127,7 +127,7 @@ function NotificationItem({ notification }) {
     <ListItemButton
       to="#"
       disableGutters
-      // component={RouterLink}
+      component={RouterLink}
       sx={{
         py: 1.5,
         px: 2.5,
@@ -259,12 +259,7 @@ export default function NotificationsPopover() {
         <Divider />
 
         <Box sx={{ p: 1 }}>
-          <Button
-            fullWidth
-            disableRipple
-            // component={RouterLink}
-            to="#"
-          >
+          <Button fullWidth disableRipple component={RouterLink} to="#">
             View All
           </Button>
         </Box>

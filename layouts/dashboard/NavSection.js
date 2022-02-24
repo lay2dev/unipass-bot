@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-// import Link from 'next/link'
+import { Link as RouterLink } from 'next/link'
 // material
 import { alpha, useTheme, styled } from '@mui/material/styles'
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material'
@@ -98,7 +98,7 @@ function NavItem({ item, active }) {
               return (
                 <ListItemStyle
                   key={title}
-                  // component={RouterLink}
+                  component={RouterLink}
                   href={path}
                   sx={{
                     ...(isActiveSub && activeSubStyle),
@@ -135,7 +135,7 @@ function NavItem({ item, active }) {
 
   return (
     <ListItemStyle
-      // component={RouterLink}
+      component={RouterLink}
       href={path}
       sx={{
         ...(isActiveRoot && activeRootStyle),
@@ -154,10 +154,7 @@ NavSection.propTypes = {
 
 export default function NavSection({ navConfig, ...other }) {
   const router = useRouter()
-  const { pathname } = router
-  // const match = (path) => (path ? !!matchPath({ path, end: false }, pathname) : false)
-  const match = () => {}
-
+  const match = (path) => path === router.pathname
   return (
     <Box {...other}>
       <List disablePadding>

@@ -3,8 +3,8 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 // material
 import { styled } from '@mui/material/styles'
+import { Link as RouterLink } from 'next/link'
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material'
-// mocks_
 import account from './account'
 // hooks
 import useResponsive from './useResponsive'
@@ -66,11 +66,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link
-          underline="none"
-          // component={RouterLink}
-          href="#"
-        >
+        <Link underline="none" component={RouterLink} href="#">
           <AccountStyle>
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
