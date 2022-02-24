@@ -1,21 +1,16 @@
-// global
 import ThemeConfig from '../theme'
 import GlobalStyles from '../theme/globalStyles'
 import ScrollToTop from '../layouts/dashboard/ScrollToTop'
 import { BaseOptionChartStyle } from '../layouts/charts/BaseOptionChart'
 import { useState } from 'react'
-// material
 import { styled } from '@mui/material/styles'
+import 'simplebar/src/simplebar.css'
 //
 import DashboardNavbar from '../layouts/dashboard/DashboardNavbar'
 import DashboardSidebar from '../layouts/dashboard/DashboardSidebar'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-// import Nav from '../components/nav'
-// import Header from '../components/header'
-// import Footer from '../components/footer'
-// ----------------------------------------------------------------------
 
 const APP_BAR_MOBILE = 64
 const APP_BAR_DESKTOP = 92
@@ -38,8 +33,6 @@ const MainStyle = styled('div')(({ theme }) => ({
     paddingRight: theme.spacing(2),
   },
 }))
-
-// ----------------------------------------------------------------------
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [open, setOpen] = useState(false)
