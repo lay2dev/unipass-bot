@@ -1,16 +1,48 @@
 // global
 import ThemeConfig from '../theme'
 import GlobalStyles from '../theme/globalStyles'
-import ScrollToTop from '../components/ScrollToTop'
-import { BaseOptionChartStyle } from '../components/charts/BaseOptionChart'
-import DashboardLayout from '../layouts/dashboard'
+import ScrollToTop from '../layouts/dashboard/ScrollToTop'
+import { BaseOptionChartStyle } from '../layouts/charts/BaseOptionChart'
+import { useState } from 'react'
+// material
+import { styled } from '@mui/material/styles'
+//
+import DashboardNavbar from '../layouts/dashboard/DashboardNavbar'
+import DashboardSidebar from '../layouts/dashboard/DashboardSidebar'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 // import Nav from '../components/nav'
 // import Header from '../components/header'
 // import Footer from '../components/footer'
+// ----------------------------------------------------------------------
+
+const APP_BAR_MOBILE = 64
+const APP_BAR_DESKTOP = 92
+
+const RootStyle = styled('div')({
+  display: 'flex',
+  minHeight: '100%',
+  overflow: 'hidden',
+})
+
+const MainStyle = styled('div')(({ theme }) => ({
+  flexGrow: 1,
+  overflow: 'auto',
+  minHeight: '100%',
+  paddingTop: APP_BAR_MOBILE + 24,
+  paddingBottom: theme.spacing(10),
+  [theme.breakpoints.up('lg')]: {
+    paddingTop: APP_BAR_DESKTOP + 24,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
+}))
+
+// ----------------------------------------------------------------------
+
 const App = ({ Component, pageProps }: AppProps) => {
+  const [open, setOpen] = useState(false)
   return (
     <ThemeConfig>
       <Head>
@@ -21,17 +53,13 @@ const App = ({ Component, pageProps }: AppProps) => {
       <GlobalStyles />
       <ScrollToTop />
       <BaseOptionChartStyle />
-      <DashboardLayout>
-        <Component {...pageProps} />
-      </DashboardLayout>
-      {/* <Nav />
-      <main>
-        <Header />
-        <div className="page">
+      <RootStyle>
+        <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+        <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+        <MainStyle>
           <Component {...pageProps} />
-        </div>
-        <Footer />
-      </main> */}
+        </MainStyle>
+      </RootStyle>
     </ThemeConfig>
   )
 }

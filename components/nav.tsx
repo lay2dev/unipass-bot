@@ -2,7 +2,6 @@ import * as React from 'react'
 import MenuItem from '@mui/material/MenuItem'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import NavTabs from './nav-tabs'
-import DashboardSidebar from './DashboardSidebar'
 
 export default function Nav() {
   // server select
@@ -19,16 +18,15 @@ export default function Nav() {
   //
 
   return (
-    <DashboardSidebar />
-    // <nav>
-    //   <h1>Server</h1>
-    //   <Select value={server} onChange={bindServer} fullWidth>
-    //     <MenuItem value="UniPass">UniPass</MenuItem>
-    //     <MenuItem value="Aven">Aven</MenuItem>
-    //     <MenuItem value="+">+ Add new server</MenuItem>
-    //   </Select>
-    //   <h1>Management</h1>
-    //   <NavTabs />
-    // </nav>
+    <nav>
+      <h1>Server</h1>
+      <Select value={server} onChange={bindServer} fullWidth>
+        <MenuItem value="UniPass">UniPass</MenuItem>
+        <MenuItem value="Aven">Aven</MenuItem>
+        <MenuItem value="+">+ Add new server</MenuItem>
+      </Select>
+      <h1>Management</h1>
+      <NavTabs />
+    </nav>
   )
 }

@@ -1,18 +1,17 @@
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-// import { Link as RouterLink, useLocation } from 'react-router-dom'
 // material
 import { styled } from '@mui/material/styles'
 import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material'
 // mocks_
-import account from '../../components/account'
+import account from './account'
 // hooks
-import useResponsive from '../../components/useResponsive'
+import useResponsive from './useResponsive'
 // components
-import Logo from '../../components/Logo'
-import Scrollbar from '../../components/Scrollbar'
-import NavSection from '../../components/NavSection'
+import Logo from './Logo'
+import Scrollbar from './Scrollbar'
+import NavSection from './NavSection'
 //
 import sidebarConfig from './SidebarConfig'
 
@@ -70,7 +69,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Link
           underline="none"
           // component={RouterLink}
-          to="#"
+          href="#"
         >
           <AccountStyle>
             <Avatar src={account.photoURL} alt="photoURL" />
@@ -98,7 +97,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         >
           <Box
             component="img"
-            src="/static/illustrations/illustration_avatar.png"
+            src="/illustration_avatar.png"
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
 

@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 // material
-import { alpha } from '@mui/material/styles';
-import { Box, MenuItem, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import { alpha } from '@mui/material/styles'
+import { Box, MenuItem, ListItemIcon, ListItemText, IconButton } from '@mui/material'
 // components
-import MenuPopover from '../../components/MenuPopover';
+import MenuPopover from './MenuPopover'
 
 // ----------------------------------------------------------------------
 
@@ -11,33 +11,33 @@ const LANGS = [
   {
     value: 'en',
     label: 'English',
-    icon: '/static/icons/ic_flag_en.svg'
+    icon: '/icons/ic_flag_en.svg',
   },
   {
     value: 'de',
     label: 'German',
-    icon: '/static/icons/ic_flag_de.svg'
+    icon: '/icons/ic_flag_de.svg',
   },
   {
     value: 'fr',
     label: 'French',
-    icon: '/static/icons/ic_flag_fr.svg'
-  }
-];
+    icon: '/icons/ic_flag_fr.svg',
+  },
+]
 
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
-  const anchorRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null)
+  const [open, setOpen] = useState(false)
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -49,8 +49,9 @@ export default function LanguagePopover() {
           width: 44,
           height: 44,
           ...(open && {
-            bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.focusOpacity)
-          })
+            bgcolor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.focusOpacity),
+          }),
         }}
       >
         <img src={LANGS[0].icon} alt={LANGS[0].label} />
@@ -76,5 +77,5 @@ export default function LanguagePopover() {
         </Box>
       </MenuPopover>
     </>
-  );
+  )
 }

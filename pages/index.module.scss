@@ -1,11 +1,12 @@
 .role {
-  h4 {
-    margin-top: 0;
+  h3 {
+    padding: 20px 0;
   }
   .roleInfo {
     display: flex;
     align-items: center;
     h3 {
+      margin-top: 0;
       margin-right: 20px;
     }
     .switch {
@@ -13,9 +14,10 @@
     }
   }
   .roleTip {
-    margin-top: 0;
     padding-top: 20px;
     padding-bottom: 20px;
+    padding-left: revert;
+    padding-right: revert;
     background: #e0e6ec;
     border-radius: 4px;
     list-style: auto;

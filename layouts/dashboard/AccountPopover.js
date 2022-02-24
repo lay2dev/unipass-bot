@@ -5,9 +5,9 @@ import { alpha } from '@mui/material/styles'
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material'
 // components
 import SeaIcon from '../../components/sea-icon'
-import MenuPopover from '../../components/MenuPopover'
+import MenuPopover from './MenuPopover'
 //
-import account from '../../components/account'
+import account from './account'
 
 // ----------------------------------------------------------------------
 
