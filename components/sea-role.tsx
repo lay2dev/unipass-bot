@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button'
 import Circle from '@mui/icons-material/Circle'
+import { SeaIcon } from '../components'
 
 export default function Page(props: { color: string; text: string }) {
   return (
@@ -15,8 +16,13 @@ export default function Page(props: { color: string; text: string }) {
         },
       }}
       color="inherit"
-      startIcon={<Circle htmlColor={props.color} />}
     >
+      <SeaIcon
+        icon="akar-icons:circle-fill"
+        sx={{
+          marginRight: '4px',
+        }}
+      />
       {props.text}
     </Button>
   )

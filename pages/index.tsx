@@ -1,16 +1,9 @@
 import type { NextPage } from 'next'
 import * as React from 'react'
-import Role from '../components/role'
 import css from './index.module.scss'
-import SeaSwitch from '../components/sea-switch'
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
-import IconButton from '@mui/material/IconButton'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import TextField from '@mui/material/TextField'
-import Paper from '@mui/material/Paper'
+import { SeaSwitch, SeaRole, SeaIcon } from '../components'
+import { Box, Button, IconButton, MenuItem, Select, TextField, Paper } from '@mui/material'
+
 const Page: NextPage = () => {
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('🌊', event.target.checked)
@@ -20,10 +13,10 @@ const Page: NextPage = () => {
       <div className="sea-border">
         <div className={css.roleInfo}>
           <h3>Role</h3>
-          <Role color="#c4505e" text="OG User" />
+          <SeaRole color="#c4505e" text="OG User" />
           <SeaSwitch className={css.switch} onChange={bindSwitch} defaultChecked={true} />
           <IconButton sx={{ marginLeft: '8px' }}>
-            <KeyboardArrowUpIcon />
+            <SeaIcon icon="ic:round-keyboard-arrow-up" />
           </IconButton>
         </div>
         <ul className={css.roleTip}>
@@ -34,13 +27,13 @@ const Page: NextPage = () => {
           <h3>Set Role</h3>
           <Select defaultValue="OG User">
             <MenuItem value="OG User">
-              <Role color="#c4505e" text="OG User" />
+              <SeaRole color="#c4505e" text="OG User" />
             </MenuItem>
             <MenuItem value="UP Lv1">
-              <Role color="#4fab9f" text="UP Lv1" />
+              <SeaRole color="#4fab9f" text="UP Lv1" />
             </MenuItem>
             <MenuItem value="UP Lv2">
-              <Role color="#3b7669" text="UP Lv2" />
+              <SeaRole color="#3b7669" text="UP Lv2" />
             </MenuItem>
           </Select>
           <h3>Set Requirement</h3>
@@ -102,10 +95,10 @@ const Page: NextPage = () => {
       <Box className="sea-border" sx={{ marginTop: '60px' }}>
         <div className={css.roleInfo}>
           <h3>Role</h3>
-          <Role color="#4fab9f" text="New User" />
+          <SeaRole color="#4fab9f" text="New User" />
           <SeaSwitch className={css.switch} onChange={bindSwitch} defaultChecked={false} />
           <IconButton sx={{ marginLeft: '8px' }}>
-            <KeyboardArrowUpIcon sx={{ transform: 'rotate(180deg)' }} />
+            <SeaIcon icon="ic:round-keyboard-arrow-up" sx={{ transform: 'rotate(180deg)' }} />
           </IconButton>
         </div>
         <ul className={css.roleTip}>
