@@ -1,11 +1,26 @@
+import * as React from 'react'
+
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 // material
 import { styled } from '@mui/material/styles'
-import NextLink from 'next/link'
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material'
-import account from './account'
+// import NextLink from 'next/link'
+import {
+  Box,
+  Link,
+  Button,
+  Drawer,
+  Typography,
+  Avatar,
+  Stack,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormHelperText,
+  FormControl,
+} from '@mui/material'
+// import account from './account'
 // hooks
 import useResponsive from './useResponsive'
 // components
@@ -26,13 +41,13 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }))
 
-const AccountStyle = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: theme.palette.grey[500_12],
-}))
+// const AccountStyle = styled('div')(({ theme }) => ({
+//   display: 'flex',
+//   alignItems: 'center',
+//   padding: theme.spacing(2, 2.5),
+//   borderRadius: Number(theme.shape.borderRadius) * 1.5,
+//   backgroundColor: theme.palette.grey[500_12],
+// }))
 
 // ----------------------------------------------------------------------
 
@@ -46,6 +61,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = router
 
   const isDesktop = useResponsive('up', 'lg')
+
+  // server select
+  const [server, setServer] = React.useState('UniPass')
+  const bindServer = (event) => {
+    const v = event.target.value
+    if (v === '+') {
+      console.log('🌊', v)
+      return
+    }
+    setServer(v)
+  }
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -65,7 +91,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Logo />
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
+      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
         <NextLink href="/" passHref>
           <Link underline="none" href="#">
             <AccountStyle>
@@ -81,6 +107,17 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             </AccountStyle>
           </Link>
         </NextLink>
+      </Box> */}
+
+      <Box sx={{ mb: 5, mx: 2.5 }}>
+        <FormControl fullWidth>
+          <Select size="small" value={server} onChange={bindServer}>
+            <MenuItem value="UniPass">UniPass</MenuItem>
+            <MenuItem value="Aven">Aven</MenuItem>
+            <MenuItem value="+">+ Add new server</MenuItem>
+          </Select>
+          <FormHelperText>Choose your server</FormHelperText>
+        </FormControl>
       </Box>
 
       <NavSection navConfig={sidebarConfig} />
