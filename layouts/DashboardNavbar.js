@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { alpha, styled } from '@mui/material/styles'
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material'
 // components
-import { SeaIcon } from '../../components'
+import { SeaIcon } from '../components'
 import Searchbar from './Searchbar'
 import AccountPopover from './AccountPopover'
 import LanguagePopover from './LanguagePopover'

@@ -6,7 +6,7 @@ import NextLink from 'next/link'
 import { alpha, useTheme, styled } from '@mui/material/styles'
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material'
 //
-import SeaIcon from '../../components/sea-icon'
+import SeaIcon from '../components/sea-icon'
 
 // ----------------------------------------------------------------------
 

@@ -1,13 +1,12 @@
 import ThemeConfig from '../theme'
 import GlobalStyles from '../theme/globalStyles'
-import ScrollToTop from '../layouts/dashboard/ScrollToTop'
-import { BaseOptionChartStyle } from '../layouts/charts/BaseOptionChart'
+import ScrollToTop from '../layouts/ScrollToTop'
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import 'simplebar/src/simplebar.css'
 //
-import DashboardNavbar from '../layouts/dashboard/DashboardNavbar'
-import DashboardSidebar from '../layouts/dashboard/DashboardSidebar'
+import DashboardNavbar from '../layouts/DashboardNavbar'
+import DashboardSidebar from '../layouts/DashboardSidebar'
 
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -47,7 +46,6 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <GlobalStyles />
       <ScrollToTop />
-      <BaseOptionChartStyle />
       <RootStyle>
         <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
         <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />

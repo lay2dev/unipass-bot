@@ -23,7 +23,7 @@ import {
   ListItemButton,
 } from '@mui/material'
 // utils
-import { SeaIcon } from '../../components'
+import { SeaIcon } from '../components'
 import Scrollbar from './Scrollbar'
 import MenuPopover from './MenuPopover'
 

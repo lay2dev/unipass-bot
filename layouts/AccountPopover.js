@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import { alpha } from '@mui/material/styles'
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material'
 // components
-import SeaIcon from '../../components/sea-icon'
+import SeaIcon from '../components/sea-icon'
 import MenuPopover from './MenuPopover'
 //
 import account from './account'
@@ -20,12 +20,12 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    linkTo: '/profile',
+    linkTo: '#',
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
-    linkTo: '/setting',
+    linkTo: '#',
   },
 ]
 
