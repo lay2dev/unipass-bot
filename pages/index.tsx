@@ -60,12 +60,7 @@ const Page: NextPage = () => {
               <MenuItem value="Ethereum">Ethereum</MenuItem>
               <MenuItem value="BTC">BTC</MenuItem>
             </Select>
-            <TextField
-              size="small"
-              sx={{ width: '500px' }}
-              variant="outlined"
-              placeholder="Contract address"
-            />
+            <TextField size="small" variant="outlined" placeholder="Contract address" />
             <Button sx={{ marginLeft: '6px' }}>NFT</Button>
             <h5 className={css.h5}>Amount</h5>
             <Select size="small" defaultValue="Amount">
@@ -91,7 +86,7 @@ const Page: NextPage = () => {
             </Button>
           </div>
           <div className={css.save}>
-            <Button sx={{ width: '38.2%' }} variant="outlined" color="secondary">
+            <Button sx={{ padding: '0 120px' }} variant="outlined" color="secondary">
               Save
             </Button>
           </div>
