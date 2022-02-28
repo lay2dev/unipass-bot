@@ -13,14 +13,23 @@
     }
   }
   .roleTip {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: revert;
-    padding-right: revert;
+    padding: 20px;
     background: #e0e6ec;
     border-radius: 4px;
     list-style: auto;
     color: #7a8895;
+    display: flex;
+    align-items: center;
+    .roleTipOne {
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      background: #ffffff83;
+      padding: 12px 20px;
+    }
+    .roleTipOne + .roleTipOne {
+      margin-left: 32px;
+    }
   }
   h5 {
     color: #7a8895;

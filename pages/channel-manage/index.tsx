@@ -14,79 +14,23 @@ const Page: NextPage = () => {
         <div className={css.roleInfo}>
           <h3>Channel</h3>
           <SeaChannel name="UniPass" />
+          <SeaSwitch className={css.switch} onChange={bindSwitch} defaultChecked={true} />
+          <IconButton sx={{ marginLeft: '8px' }}>
+            <SeaIcon icon="ic:round-keyboard-arrow-up" />
+          </IconButton>
         </div>
-        {/* <ul className={css.roleTip}>
-          <li>{'UniPass Level >= Lv4'}</li>
-          <li>{'Contract 0x2623...0736, amount ≥ 100'}</li>
-        </ul>
-        <div>
-          <h3>Set Role</h3>
-          <Select size="small" defaultValue="OG User">
-            <MenuItem value="OG User">
-              <SeaRole color="#c4505e" text="OG User" />
-            </MenuItem>
-            <MenuItem value="UP Lv1">
-              <SeaRole color="#4fab9f" text="UP Lv1" />
-            </MenuItem>
-            <MenuItem value="UP Lv2">
-              <SeaRole color="#3b7669" text="UP Lv2" />
-            </MenuItem>
-          </Select>
-          <h3>Set Requirement</h3>
-          <Paper elevation={12} sx={{ padding: '20px' }}>
-            <h4>UniPass requirement</h4>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Level">
-              <MenuItem value="Level">Level</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
-              <MenuItem value=">=">{'>='}</MenuItem>
-              <MenuItem value="<=">{'<='}</MenuItem>
-              <MenuItem value="=">{'='}</MenuItem>
-              <MenuItem value=">">{'>'}</MenuItem>
-              <MenuItem value="<">{'<'}</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Lv4">
-              <MenuItem value="Lv4">{'Lv4'}</MenuItem>
-            </Select>
-          </Paper>
-          <Paper elevation={12} sx={{ padding: '20px', marginTop: '20px' }}>
-            <h4>Asset requirement</h4>
-            <h5 className={css.h5}>Contract address</h5>
-            <Select size="small" sx={{ marginRight: '6px' }} defaultValue="Ethereum">
-              <MenuItem value="Ethereum">Ethereum</MenuItem>
-              <MenuItem value="BTC">BTC</MenuItem>
-            </Select>
-            <TextField size="small" variant="outlined" placeholder="Contract address" />
-            <Button sx={{ marginLeft: '6px' }}>NFT</Button>
-            <h5 className={css.h5}>Amount</h5>
-            <Select size="small" defaultValue="Amount">
-              <MenuItem value="Amount">Amount</MenuItem>
-              <MenuItem value="CKB">CKB</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
-              <MenuItem value=">=">{'>='}</MenuItem>
-              <MenuItem value="<=">{'<='}</MenuItem>
-              <MenuItem value="=">{'='}</MenuItem>
-              <MenuItem value=">">{'>'}</MenuItem>
-              <MenuItem value="<">{'<'}</MenuItem>
-            </Select>
-            <TextField size="small" sx={{ marginLeft: '6px' }} defaultValue={1} type="number" />
-          </Paper>
-          <div className={css.newRequirement}>
-            <h4>Add a new requirement</h4>
-            <Button variant="outlined" disabled>
-              UniPass
-            </Button>
-            <Button variant="contained" sx={{ marginLeft: '8px' }}>
-              Asset
-            </Button>
-          </div>
-          <div className={css.save}>
-            <Button sx={{ padding: '0 120px' }} variant="outlined" color="secondary">
-              Save
-            </Button>
-          </div>
-        </div> */}
+      </div>
+      <div className={css.roleTip}>
+        <div className={css.roleTipOne}>
+          <SeaIcon sx={{ fontSize: '32px' }} icon="icon-park-outline:message-one"></SeaIcon>
+          <SeaRole sx={{ marginLeft: '20px' }} color="#c4505e" text="UP Lv1" />
+          <SeaRole sx={{ marginLeft: '20px' }} color="#e9c0a0" text="UP Lv2" />
+        </div>
+        <div className={css.roleTipOne}>
+          <SeaIcon sx={{ fontSize: '32px' }} icon="icon-park-outline:message-privacy"></SeaIcon>
+          <SeaRole sx={{ marginLeft: '20px' }} color="#4fab9f" text="UP Lv1" />
+          <SeaRole sx={{ marginLeft: '20px' }} color="#3b7669" text="UP Lv2" />
+        </div>
       </div>
     </div>
   )

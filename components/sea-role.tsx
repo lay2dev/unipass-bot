@@ -1,8 +1,7 @@
 import Button from '@mui/material/Button'
-import Circle from '@mui/icons-material/Circle'
 import { SeaIcon } from '../components'
-
-export default function Page(props: { color: string; text: string }) {
+import { SxProps, Theme } from '@mui/material'
+export default function Page(props: { color: string; text: string; sx?: SxProps<Theme> }) {
   return (
     <Button
       sx={{
@@ -14,6 +13,7 @@ export default function Page(props: { color: string; text: string }) {
         '&:hover': {
           borderColor: props.color,
         },
+        ...props.sx,
       }}
       color="inherit"
     >
