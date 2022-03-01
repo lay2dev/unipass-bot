@@ -37,4 +37,13 @@
   .select {
     min-width: 300px;
   }
+  .save {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    .submit {
+      padding-left: 120px;
+      padding-right: 120px;
+    }
+  }
 }

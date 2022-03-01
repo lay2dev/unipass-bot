@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import * as React from 'react'
 import { SeaSwitch, SeaRole, SeaIcon } from '../components'
-import { Box, Button, IconButton, MenuItem, Select, TextField, Paper } from '@mui/material'
+import { Button, IconButton, MenuItem, Select, TextField, Paper } from '@mui/material'
 
 const Page: NextPage = () => {
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -9,8 +9,8 @@ const Page: NextPage = () => {
   }
   return (
     <div id="page-index">
-      <div className="sea-border">
-        <div className="roleInfo">
+      <div className="sea-box-one">
+        <div className="info">
           <h3>Role</h3>
           <SeaRole color="#c4505e" text="OG User" />
           <SeaSwitch className="switch" onChange={bindSwitch} defaultChecked={true} />
@@ -18,7 +18,7 @@ const Page: NextPage = () => {
             <SeaIcon icon="ic:round-keyboard-arrow-up" />
           </IconButton>
         </div>
-        <ul className="roleTip">
+        <ul className="tip-box">
           <li>{'UniPass Level >= Lv4'}</li>
           <li>{'Contract 0x2623...0736, amount ≥ 100'}</li>
         </ul>
@@ -97,8 +97,8 @@ const Page: NextPage = () => {
           </div>
         </div>
       </div>
-      <Box className="sea-border" sx={{ marginTop: '60px' }}>
-        <div className="roleInfo">
+      <div className="sea-box-one">
+        <div className="info">
           <h3>Role</h3>
           <SeaRole color="#4fab9f" text="New User" />
           <SeaSwitch className="switch" onChange={bindSwitch} defaultChecked={false} />
@@ -106,10 +106,10 @@ const Page: NextPage = () => {
             <SeaIcon icon="ic:round-keyboard-arrow-up" sx={{ transform: 'rotate(180deg)' }} />
           </IconButton>
         </div>
-        <ul className="roleTip">
+        <ul className="tip-box">
           <li>{'UniPass Level ≥ Lv2'}</li>
         </ul>
-      </Box>
+      </div>
     </div>
   )
 }

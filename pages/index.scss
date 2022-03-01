@@ -1,5 +1,5 @@
 #page-index {
-  .roleInfo {
+  .info {
     display: flex;
     align-items: center;
     h3 {
@@ -9,7 +9,7 @@
       margin-left: auto;
     }
   }
-  .roleTip {
+  .tip-box {
     padding-top: 20px;
     padding-bottom: 20px;
     padding-left: revert;
@@ -26,7 +26,7 @@
     border-radius: 10px;
   }
   .save {
-    margin-top: 20px;
+    margin-top: 32px;
     display: flex;
     justify-content: center;
     .submit {
