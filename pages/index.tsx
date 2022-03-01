@@ -18,10 +18,12 @@ const Page: NextPage = () => {
             <SeaIcon icon="ic:round-keyboard-arrow-up" />
           </IconButton>
         </div>
-        <ul className="tip-box">
-          <li>{'UniPass Level >= Lv4'}</li>
-          <li>{'Contract 0x2623...0736, amount ≥ 100'}</li>
-        </ul>
+        <div className="tip-box">
+          <ul>
+            <li>{'UniPass Level >= Lv4'}</li>
+            <li>{'Contract 0x2623...0736, amount ≥ 100'}</li>
+          </ul>
+        </div>
         <div>
           <h3>Set Role</h3>
           <Select size="small" defaultValue="OG User">
@@ -106,9 +108,11 @@ const Page: NextPage = () => {
             <SeaIcon icon="ic:round-keyboard-arrow-up" sx={{ transform: 'rotate(180deg)' }} />
           </IconButton>
         </div>
-        <ul className="tip-box">
-          <li>{'UniPass Level ≥ Lv2'}</li>
-        </ul>
+        <div className="tip-box">
+          <ul>
+            <li>{'UniPass Level ≥ Lv2'}</li>
+          </ul>
+        </div>
       </div>
       <div className="sea-new-box">
         <Button>+ Add a new role rule</Button>
