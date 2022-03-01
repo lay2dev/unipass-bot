@@ -4,7 +4,7 @@ import ScrollToTop from '../layouts/ScrollToTop'
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
 import 'simplebar/src/simplebar.css'
-import './index.scss'
+import './_app.scss'
 //
 import DashboardNavbar from '../layouts/DashboardNavbar'
 import DashboardSidebar from '../layouts/DashboardSidebar'

@@ -4,6 +4,7 @@ import { SxProps, Theme } from '@mui/material'
 export default function Page(props: { color: string; text: string; sx?: SxProps<Theme> }) {
   return (
     <Button
+      className="sea-role"
       sx={{
         borderRadius: '10px',
         background: 'rgba(0, 0, 0, 0.04)',

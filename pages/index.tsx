@@ -8,7 +8,7 @@ const Page: NextPage = () => {
     console.log('🌊', event.target.checked)
   }
   return (
-    <div className="page-index">
+    <div id="page-index">
       <div className="sea-border">
         <div className="roleInfo">
           <h3>Role</h3>

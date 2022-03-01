@@ -1,8 +1,8 @@
-.page-channel-manage {
+#page-channel-manage {
   h3 {
     padding: 20px 0;
   }
-  .roleInfo {
+  .info {
     display: flex;
     align-items: center;
     h3 {
@@ -12,7 +12,7 @@
       margin-left: auto;
     }
   }
-  .roleTip {
+  .tip {
     padding: 20px;
     background: #e0e6ec;
     border-radius: 4px;
@@ -20,29 +20,24 @@
     color: #7a8895;
     display: flex;
     align-items: center;
-    .roleTipOne {
+    .one {
       border-radius: 40px;
       display: flex;
       align-items: center;
       background: #ffffff83;
       padding: 12px 20px;
+      > .sea-icon {
+        font-size: 32px;
+      }
+      .sea-role {
+        margin-left: 20px;
+      }
     }
-    .roleTipOne + .roleTipOne {
+    .one + .one {
       margin-left: 32px;
     }
   }
   h5 {
     color: #7a8895;
-  }
-  .newRequirement {
-    padding: 20px;
-    margin-top: 40px;
-    border: 1px dashed #7a8895;
-    border-radius: 10px;
-  }
-  .save {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
   }
 }

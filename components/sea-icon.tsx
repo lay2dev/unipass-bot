@@ -9,5 +9,5 @@ interface IconType {
 }
 
 export default function SeaIcon({ icon, sx, ...other }: IconType) {
-  return <Box component={Icon} icon={icon} sx={{ ...sx }} {...other} />
+  return <Box className="sea-icon" component={Icon} icon={icon} sx={{ ...sx }} {...other} />
 }
