@@ -1,0 +1,15 @@
+// components
+.sea-channel {
+  background: #e0e6ec;
+  padding: 2px 20px;
+  border-radius: 14px;
+  font-weight: 500;
+}
+.sea-role {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.04);
+  text-transform: none;
+  .sea-icon {
+    margin-right: 4px;
+  }
+}

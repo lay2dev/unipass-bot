@@ -1,2 +1,27 @@
+// components
+@import '../components/index.scss';
+// pages
 @import './index.scss';
 @import './channel-manage/index.scss';
+
+h3 {
+  padding: 20px 0;
+}
+h5 {
+  color: #7a8895;
+}
+// mui
+.MuiPaper-root {
+  padding: 20px;
+}
+.MuiPaper-root + .MuiPaper-root {
+  margin-top: 20px;
+}
+// sea
+.sea-operation-box {
+  > * {
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+}

@@ -1,18 +1,15 @@
 #page-channel-manage {
-  h3 {
-    padding: 20px 0;
-  }
   .info {
     display: flex;
     align-items: center;
-    h3 {
-      margin-right: 20px;
+    .sea-channel {
+      margin-left: 20px;
     }
     .switch {
       margin-left: auto;
     }
   }
-  .tip {
+  .tip-box {
     padding: 20px;
     background: #e0e6ec;
     border-radius: 4px;
@@ -37,7 +34,7 @@
       margin-left: 32px;
     }
   }
-  h5 {
-    color: #7a8895;
+  .select {
+    min-width: 300px;
   }
 }

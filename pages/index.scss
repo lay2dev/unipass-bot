@@ -1,7 +1,4 @@
 #page-index {
-  h3 {
-    padding: 20px 0;
-  }
   .roleInfo {
     display: flex;
     align-items: center;
@@ -22,10 +19,7 @@
     list-style: auto;
     color: #7a8895;
   }
-  h5 {
-    color: #7a8895;
-  }
-  .newRequirement {
+  .new-requirement {
     padding: 20px;
     margin-top: 40px;
     border: 1px dashed #7a8895;
@@ -35,5 +29,9 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    .submit {
+      padding-left: 120px;
+      padding-right: 120px;
+    }
   }
 }

@@ -6,9 +6,6 @@ export default function Page(props: { color: string; text: string; sx?: SxProps<
     <Button
       className="sea-role"
       sx={{
-        borderRadius: '10px',
-        background: 'rgba(0, 0, 0, 0.04)',
-        textTransform: 'none',
         color: props.color,
         borderColor: props.color,
         '&:hover': {
@@ -18,12 +15,7 @@ export default function Page(props: { color: string; text: string; sx?: SxProps<
       }}
       color="inherit"
     >
-      <SeaIcon
-        icon="akar-icons:circle-fill"
-        sx={{
-          marginRight: '4px',
-        }}
-      />
+      <SeaIcon icon="akar-icons:circle-fill" />
       {props.text}
     </Button>
   )

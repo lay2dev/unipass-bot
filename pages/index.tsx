@@ -36,56 +36,62 @@ const Page: NextPage = () => {
             </MenuItem>
           </Select>
           <h3>Set Requirement</h3>
-          <Paper elevation={12} sx={{ padding: '20px' }}>
+          <Paper elevation={12}>
             <h4>UniPass requirement</h4>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Level">
-              <MenuItem value="Level">Level</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
-              <MenuItem value=">=">{'>='}</MenuItem>
-              <MenuItem value="<=">{'<='}</MenuItem>
-              <MenuItem value="=">{'='}</MenuItem>
-              <MenuItem value=">">{'>'}</MenuItem>
-              <MenuItem value="<">{'<'}</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue="Lv4">
-              <MenuItem value="Lv4">{'Lv4'}</MenuItem>
-            </Select>
+            <div className="sea-operation-box">
+              <Select size="small" defaultValue="Level">
+                <MenuItem value="Level">Level</MenuItem>
+              </Select>
+              <Select size="small" defaultValue=">=">
+                <MenuItem value=">=">{'>='}</MenuItem>
+                <MenuItem value="<=">{'<='}</MenuItem>
+                <MenuItem value="=">{'='}</MenuItem>
+                <MenuItem value=">">{'>'}</MenuItem>
+                <MenuItem value="<">{'<'}</MenuItem>
+              </Select>
+              <Select size="small" defaultValue="Lv4">
+                <MenuItem value="Lv4">{'Lv4'}</MenuItem>
+              </Select>
+            </div>
           </Paper>
-          <Paper elevation={12} sx={{ padding: '20px', marginTop: '20px' }}>
+          <Paper elevation={12}>
             <h4>Asset requirement</h4>
-            <h5 className="h5">Contract address</h5>
-            <Select size="small" sx={{ marginRight: '6px' }} defaultValue="Ethereum">
-              <MenuItem value="Ethereum">Ethereum</MenuItem>
-              <MenuItem value="BTC">BTC</MenuItem>
-            </Select>
-            <TextField size="small" variant="outlined" placeholder="Contract address" />
-            <Button sx={{ marginLeft: '6px' }}>NFT</Button>
-            <h5 className="h5">Amount</h5>
-            <Select size="small" defaultValue="Amount">
-              <MenuItem value="Amount">Amount</MenuItem>
-              <MenuItem value="CKB">CKB</MenuItem>
-            </Select>
-            <Select size="small" sx={{ marginLeft: '6px' }} defaultValue=">=">
-              <MenuItem value=">=">{'>='}</MenuItem>
-              <MenuItem value="<=">{'<='}</MenuItem>
-              <MenuItem value="=">{'='}</MenuItem>
-              <MenuItem value=">">{'>'}</MenuItem>
-              <MenuItem value="<">{'<'}</MenuItem>
-            </Select>
-            <TextField size="small" sx={{ marginLeft: '6px' }} defaultValue={1} type="number" />
+            <h5>Contract address</h5>
+            <div className="sea-operation-box">
+              <Select size="small" defaultValue="Ethereum">
+                <MenuItem value="Ethereum">Ethereum</MenuItem>
+                <MenuItem value="BTC">BTC</MenuItem>
+              </Select>
+              <TextField size="small" variant="outlined" placeholder="Contract address" />
+              <Button>NFT</Button>
+            </div>
+            <h5>Amount</h5>
+            <div className="sea-operation-box">
+              <Select size="small" defaultValue="Amount">
+                <MenuItem value="Amount">Amount</MenuItem>
+                <MenuItem value="CKB">CKB</MenuItem>
+              </Select>
+              <Select size="small" defaultValue=">=">
+                <MenuItem value=">=">{'>='}</MenuItem>
+                <MenuItem value="<=">{'<='}</MenuItem>
+                <MenuItem value="=">{'='}</MenuItem>
+                <MenuItem value=">">{'>'}</MenuItem>
+                <MenuItem value="<">{'<'}</MenuItem>
+              </Select>
+              <TextField size="small" defaultValue={1} type="number" />
+            </div>
           </Paper>
-          <div className="newRequirement">
+          <div className="new-requirement">
             <h4>Add a new requirement</h4>
-            <Button variant="outlined" disabled>
-              UniPass
-            </Button>
-            <Button variant="contained" sx={{ marginLeft: '8px' }}>
-              Asset
-            </Button>
+            <div className="sea-operation-box">
+              <Button variant="outlined" disabled>
+                UniPass
+              </Button>
+              <Button variant="contained">Asset</Button>
+            </div>
           </div>
           <div className="save">
-            <Button sx={{ padding: '0 120px' }} variant="outlined" color="secondary">
+            <Button className="submit" variant="outlined" color="secondary">
               Save
             </Button>
           </div>
