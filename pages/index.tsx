@@ -91,7 +91,7 @@ const Page: NextPage = () => {
             </div>
           </div>
           <div className="save">
-            <Button className="submit" variant="outlined" color="secondary">
+            <Button className="submit" variant="contained" color="secondary">
               Save
             </Button>
           </div>
@@ -109,6 +109,9 @@ const Page: NextPage = () => {
         <ul className="tip-box">
           <li>{'UniPass Level ≥ Lv2'}</li>
         </ul>
+      </div>
+      <div className="sea-new-box">
+        <Button>+ Add a new role rule</Button>
       </div>
     </div>
   )

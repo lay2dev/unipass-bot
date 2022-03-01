@@ -19,6 +19,9 @@ h5 {
 }
 // sea
 .sea-operation-box {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   > * {
     margin-top: 8px;
     margin-right: 8px;
@@ -33,4 +36,8 @@ h5 {
 }
 .sea-box-one + .sea-box-one {
   margin-top: 40px;
+}
+.sea-new-box {
+  text-align: center;
+  margin-top: 24px;
 }

@@ -56,6 +56,14 @@ const Page: NextPage = () => {
               <SeaRole color="#e9c0a0" text="UP Lv3" />
               <SeaRole color="#4fab9f" text="UP Lv1" />
               <SeaRole color="#3b7669" text="UP Lv2" />
+              <div className="operation">
+                <IconButton>
+                  <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
+                </IconButton>
+                <IconButton>
+                  <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
+                </IconButton>
+              </div>
             </div>
           </div>
         </Paper>
@@ -66,11 +74,19 @@ const Page: NextPage = () => {
             <div className="sea-operation-box">
               <SeaRole color="#4fab9f" text="UP Lv1" />
               <SeaRole color="#3b7669" text="UP Lv2" />
+              <div className="operation">
+                <IconButton>
+                  <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
+                </IconButton>
+                <IconButton>
+                  <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
+                </IconButton>
+              </div>
             </div>
           </div>
         </Paper>
         <div className="save">
-          <Button className="submit" variant="outlined" color="secondary">
+          <Button className="submit" variant="contained" color="secondary">
             Save
           </Button>
         </div>
@@ -118,6 +134,9 @@ const Page: NextPage = () => {
             <SeaRole color="#3b7669" text="UP Lv2" />
           </div>
         </div>
+      </div>
+      <div className="sea-new-box">
+        <Button>+ Add a new channel manage</Button>
       </div>
     </div>
   )
