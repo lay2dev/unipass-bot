@@ -12,12 +12,26 @@ const Page: NextPage = () => {
   const [channel, setChannel] = React.useState('UniPass')
   const bindChannel = (event: SelectChangeEvent) => {
     const v = event.target.value
-    if (v === '+') {
-      console.log('🌊', v)
-      return
-    }
     setChannel(v)
   }
+  const [viewChannel, setViewChannel] = React.useState([
+    {
+      color: '#c4505e',
+      lv: 'UP Lv4',
+    },
+    {
+      color: '#e9c0a0',
+      lv: 'UP Lv3',
+    },
+    {
+      color: '#4fab9f',
+      lv: 'UP Lv1',
+    },
+    {
+      color: '#3b7669',
+      lv: 'UP Lv2',
+    },
+  ])
   return (
     <div id="page-channel-manage">
       <div className="sea-box-one">
@@ -52,10 +66,9 @@ const Page: NextPage = () => {
             <h4>View channel</h4>
             <h5>Allows members to view this channel.</h5>
             <div className="sea-operation-box">
-              <SeaRole color="#c4505e" text="UP Lv4" />
-              <SeaRole color="#e9c0a0" text="UP Lv3" />
-              <SeaRole color="#4fab9f" text="UP Lv1" />
-              <SeaRole color="#3b7669" text="UP Lv2" />
+              {viewChannel.map((e, i) => {
+                return <SeaRole key={i} color={e.color} text={e.lv} />
+              })}
               <div className="operation">
                 <IconButton>
                   <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
