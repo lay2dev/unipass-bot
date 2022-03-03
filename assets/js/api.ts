@@ -1,7 +1,7 @@
 // import { ElMessage } from 'element-plus'
 import axios from 'axios'
 const api = axios.create({
-  baseURL: 'https://t.api.unipass.id',
+  baseURL: 'https://t.api.unipass.id/admin',
   timeout: 25000,
   headers: {},
 })
@@ -22,7 +22,7 @@ api.interceptors.request.use(
   },
   function (error) {
     // 对请求错误做些什么
-    return null
+    return error
   },
 )
 
@@ -37,7 +37,7 @@ api.interceptors.response.use(
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     // ElMessage.error('请求失败')
-    return null
+    return error
   },
 )
 

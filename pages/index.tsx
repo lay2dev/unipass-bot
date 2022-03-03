@@ -122,16 +122,7 @@ const Page: NextPage = () => {
   )
 }
 
-Page.getInitialProps = async () => {
-  const res = await api.post('/account/login', {
-    data: {
-      uniPassId: 'aven123',
-      key: '123213',
-      sig: '1212',
-      raw: '123123',
-    },
-  })
-  console.log('🌊', res)
-  return {}
-}
+// Page.getInitialProps = async () => {
+//   return { test: 123 }
+// }
 export default Page

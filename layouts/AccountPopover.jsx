@@ -9,6 +9,8 @@ import MenuPopover from './MenuPopover'
 import account from './account'
 import { useRouter } from 'next/router'
 
+import UP from 'up-core-test'
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -20,12 +22,12 @@ const MENU_OPTIONS = [
   {
     label: 'Profile',
     icon: 'eva:person-fill',
-    linkTo: '#',
+    linkTo: '/',
   },
   {
     label: 'Settings',
     icon: 'eva:settings-2-fill',
-    linkTo: '#',
+    linkTo: '/',
   },
 ]
 
@@ -44,6 +46,11 @@ export default function AccountPopover() {
       router.push(path)
     }
     setOpen(false)
+  }
+
+  const bindLogout = () => {
+    UP.disconnect()
+    router.replace('/login')
   }
 
   return (
@@ -73,7 +80,7 @@ export default function AccountPopover() {
 
       <MenuPopover
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose()}
         anchorEl={anchorRef.current}
         sx={{ width: 220 }}
       >
@@ -109,7 +116,7 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button fullWidth color="inherit" variant="outlined" onClick={bindLogout}>
             Logout
           </Button>
         </Box>
