@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useRouter } from 'next/router'
-import NextLink from 'next/link'
 // material
 import { alpha, useTheme, styled } from '@mui/material/styles'
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material'
@@ -55,6 +54,11 @@ function NavItem({ item, active }) {
   const { title, path, icon, info, children } = item
   const [open, setOpen] = useState(isActiveRoot)
 
+  const router = useRouter()
+  const toPath = () => {
+    router.push(path)
+  }
+
   const handleOpen = () => {
     setOpen((prev) => !prev)
   }
@@ -96,34 +100,34 @@ function NavItem({ item, active }) {
               const isActiveSub = active(path)
 
               return (
-                <NextLink key={title} href={path} passHref>
-                  <ListItemStyle
-                    sx={{
-                      ...(isActiveSub && activeSubStyle),
-                    }}
-                  >
-                    <ListItemIconStyle>
-                      <Box
-                        component="span"
-                        sx={{
-                          width: 4,
-                          height: 4,
-                          display: 'flex',
-                          borderRadius: '50%',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          bgcolor: 'text.disabled',
-                          transition: (theme) => theme.transitions.create('transform'),
-                          ...(isActiveSub && {
-                            transform: 'scale(2)',
-                            bgcolor: 'primary.main',
-                          }),
-                        }}
-                      />
-                    </ListItemIconStyle>
-                    <ListItemText disableTypography primary={title} />
-                  </ListItemStyle>
-                </NextLink>
+                <ListItemStyle
+                  key={title}
+                  onClick={toPath}
+                  sx={{
+                    ...(isActiveSub && activeSubStyle),
+                  }}
+                >
+                  <ListItemIconStyle>
+                    <Box
+                      component="span"
+                      sx={{
+                        width: 4,
+                        height: 4,
+                        display: 'flex',
+                        borderRadius: '50%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: 'text.disabled',
+                        transition: (theme) => theme.transitions.create('transform'),
+                        ...(isActiveSub && {
+                          transform: 'scale(2)',
+                          bgcolor: 'primary.main',
+                        }),
+                      }}
+                    />
+                  </ListItemIconStyle>
+                  <ListItemText disableTypography primary={title} />
+                </ListItemStyle>
               )
             })}
           </List>
@@ -133,17 +137,16 @@ function NavItem({ item, active }) {
   }
 
   return (
-    <NextLink href={path} passHref>
-      <ListItemStyle
-        sx={{
-          ...(isActiveRoot && activeRootStyle),
-        }}
-      >
-        <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
-        <ListItemText disableTypography primary={title} />
-        {info && info}
-      </ListItemStyle>
-    </NextLink>
+    <ListItemStyle
+      onClick={toPath}
+      sx={{
+        ...(isActiveRoot && activeRootStyle),
+      }}
+    >
+      <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
+      <ListItemText disableTypography primary={title} />
+      {info && info}
+    </ListItemStyle>
   )
 }
 

@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import NextLink from 'next/link'
 // material
 import { alpha } from '@mui/material/styles'
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material'
@@ -8,6 +7,7 @@ import SeaIcon from '../components/sea-icon'
 import MenuPopover from './MenuPopover'
 //
 import account from './account'
+import { useRouter } from 'next/router'
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +38,11 @@ export default function AccountPopover() {
   const handleOpen = () => {
     setOpen(true)
   }
-  const handleClose = () => {
+  const router = useRouter()
+  const handleClose = (path) => {
+    if (path) {
+      router.push(path)
+    }
     setOpen(false)
   }
 
@@ -85,24 +89,23 @@ export default function AccountPopover() {
         <Divider sx={{ my: 1 }} />
 
         {MENU_OPTIONS.map((option) => (
-          <NextLink href={option.linkTo} key={option.label} passHref>
-            <MenuItem
-              to={option.linkTo}
-              onClick={handleClose}
-              sx={{ typography: 'body2', py: 1, px: 2.5 }}
-            >
-              <SeaIcon
-                icon={option.icon}
-                sx={{
-                  mr: 2,
-                  width: 24,
-                  height: 24,
-                }}
-              />
+          <MenuItem
+            key={option.label}
+            to={option.linkTo}
+            onClick={() => handleClose(option.linkTo)}
+            sx={{ typography: 'body2', py: 1, px: 2.5 }}
+          >
+            <SeaIcon
+              icon={option.icon}
+              sx={{
+                mr: 2,
+                width: 24,
+                height: 24,
+              }}
+            />
 
-              {option.label}
-            </MenuItem>
-          </NextLink>
+            {option.label}
+          </MenuItem>
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>

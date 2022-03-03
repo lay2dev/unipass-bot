@@ -5,7 +5,6 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 // material
 import { styled } from '@mui/material/styles'
-// import NextLink from 'next/link'
 import {
   Box,
   Link,
@@ -73,24 +72,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         <Logo />
       </Box>
-
-      {/* <Box sx={{ mb: 5, mx: 2.5 }}>
-        <NextLink href="/" passHref>
-          <Link underline="none" href="#">
-            <AccountStyle>
-              <Avatar src={account.photoURL} alt="photoURL" />
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                  {account.displayName}
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  {account.role}
-                </Typography>
-              </Box>
-            </AccountStyle>
-          </Link>
-        </NextLink>
-      </Box> */}
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <FormControl fullWidth>

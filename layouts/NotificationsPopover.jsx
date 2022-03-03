@@ -2,7 +2,6 @@ import { faker } from '@faker-js/faker'
 import PropTypes from 'prop-types'
 import { noCase } from 'change-case'
 import { useRef, useState } from 'react'
-import NextLink from 'next/link'
 import Image from 'next/image'
 import { set, sub, formatDistanceToNow } from 'date-fns'
 // material
@@ -131,42 +130,44 @@ NotificationItem.propTypes = {
 
 function NotificationItem({ notification }) {
   const { avatar, title } = renderContent(notification)
+  const bindNotification = () => {
+    console.log('bindNotification')
+  }
 
   return (
-    <NextLink href="#" passHref>
-      <ListItemButton
-        disableGutters
-        sx={{
-          py: 1.5,
-          px: 2.5,
-          mt: '1px',
-          ...(notification.isUnRead && {
-            bgcolor: 'action.selected',
-          }),
-        }}
-      >
-        <ListItemAvatar>
-          <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={title}
-          secondary={
-            <Typography
-              variant="caption"
-              sx={{
-                mt: 0.5,
-                display: 'flex',
-                alignItems: 'center',
-                color: 'text.disabled',
-              }}
-            >
-              <SeaIcon icon="eva:clock-fill" sx={{ mr: 0.5, width: 16, height: 16 }} />
-              {formatDistanceToNow(new Date(notification.createdAt))}
-            </Typography>
-          }
-        />
-      </ListItemButton>
-    </NextLink>
+    <ListItemButton
+      onClick={bindNotification}
+      disableGutters
+      sx={{
+        py: 1.5,
+        px: 2.5,
+        mt: '1px',
+        ...(notification.isUnRead && {
+          bgcolor: 'action.selected',
+        }),
+      }}
+    >
+      <ListItemAvatar>
+        <Avatar sx={{ bgcolor: 'background.neutral' }}>{avatar}</Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={title}
+        secondary={
+          <Typography
+            variant="caption"
+            sx={{
+              mt: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              color: 'text.disabled',
+            }}
+          >
+            <SeaIcon icon="eva:clock-fill" sx={{ mr: 0.5, width: 16, height: 16 }} />
+            {formatDistanceToNow(new Date(notification.createdAt))}
+          </Typography>
+        }
+      />
+    </ListItemButton>
   )
 }
 
@@ -182,6 +183,10 @@ export default function NotificationsPopover() {
 
   const handleClose = () => {
     setOpen(false)
+  }
+
+  const bindViewAll = () => {
+    console.log('bindViewAll')
   }
 
   const handleMarkAllAsRead = () => {
@@ -268,11 +273,9 @@ export default function NotificationsPopover() {
         <Divider />
 
         <Box sx={{ p: 1 }}>
-          <NextLink href="#" passHref>
-            <Button fullWidth disableRipple>
-              View All
-            </Button>
-          </NextLink>
+          <Button fullWidth disableRipple onClick={bindViewAll}>
+            View All
+          </Button>
         </Box>
       </MenuPopover>
     </>
