@@ -1,16 +1,17 @@
 import React, { createContext, useReducer, useContext } from 'react'
+import merge from 'lodash.merge'
 
-const initialState = { count: 0 }
+const initState = {
+  count: 0,
+  account: {
+    displayName: 'UniPass BOT',
+    email: 'hi@mail.unipass.me',
+    photoURL: '/avatar.jpg',
+  },
+}
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case '+':
-      return { count: state.count + 1 }
-    case '-':
-      return { count: state.count - 1 }
-    default:
-      throw new Error()
-  }
+const reducer = (state, data) => {
+  return { ...merge(state, data) }
 }
 
 const Context = createContext()
@@ -20,7 +21,7 @@ const useStore = () => {
 }
 
 const StoreProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initState)
   return <Context.Provider value={[state, dispatch]}>{children}</Context.Provider>
 }
 

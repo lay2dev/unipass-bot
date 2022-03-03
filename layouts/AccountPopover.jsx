@@ -6,7 +6,7 @@ import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '
 import SeaIcon from '../components/sea-icon'
 import MenuPopover from './MenuPopover'
 //
-import account from './account'
+import { useStore } from '../assets/js/store'
 import { useRouter } from 'next/router'
 
 import UP from 'up-core-test'
@@ -36,6 +36,8 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
+  const [state] = useStore()
+  const { account } = state
 
   const bindOpen = () => {
     setOpen(true)

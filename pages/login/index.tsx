@@ -6,10 +6,17 @@ import { useStore } from '../../assets/js/store'
 
 const Page: NextPage = () => {
   const router = useRouter()
-  const [state, dispatch] = useStore()
+  const [dispatch] = useStore()
   const connect = async () => {
     try {
-      await UP.connect({ email: false, evmKeys: true })
+      const account = await UP.connect({ email: false, evmKeys: true })
+
+      dispatch({
+        account: {
+          displayName: account.username,
+          email: account.email,
+        },
+      })
       router.replace('/')
     } catch (error) {}
   }
@@ -17,10 +24,8 @@ const Page: NextPage = () => {
   return (
     <div id="page-login">
       <Button variant="contained" onClick={connect}>
-        Login {state.count}
+        Login
       </Button>
-      <Button onClick={() => dispatch({ type: '-' })}>-</Button>
-      <Button onClick={() => dispatch({ type: '+' })}>+</Button>
     </div>
   )
 }
