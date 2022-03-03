@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 import * as React from 'react'
 import { SeaSwitch, SeaRole, SeaIcon } from '../components'
 import { Button, IconButton, MenuItem, Select, TextField, Paper } from '@mui/material'
-import api from '../assets/js/api'
 
 const Page: NextPage = () => {
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,8 +120,4 @@ const Page: NextPage = () => {
     </div>
   )
 }
-
-// Page.getInitialProps = async () => {
-//   return { test: 123 }
-// }
 export default Page

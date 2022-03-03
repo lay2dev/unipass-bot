@@ -11,15 +11,14 @@ import './_app.scss'
 // layouts
 import DashboardNavbar from '../layouts/DashboardNavbar'
 import DashboardSidebar from '../layouts/DashboardSidebar'
-
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-
 import UP from 'up-core-test'
 import UPCKB from 'up-ckb-alpha-test'
 import PWCore from '@lay2/pw-core'
-import env from '../assets/js/env'
 import { useRouter } from 'next/router'
+import env from '../assets/js/env'
+import { StoreProvider } from '../assets/js/store'
 
 const APP_BAR_MOBILE = 64
 const APP_BAR_DESKTOP = 92
@@ -79,13 +78,15 @@ const App = ({ Component, pageProps }: AppProps) => {
       </Head>
       <GlobalStyles />
       <ScrollToTop />
-      <RootStyle>
-        <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-        <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-        <MainStyle id="unipass-bot">
-          <Component {...pageProps} />
-        </MainStyle>
-      </RootStyle>
+      <StoreProvider>
+        <RootStyle>
+          <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
+          <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+          <MainStyle id="unipass-bot">
+            <Component {...pageProps} />
+          </MainStyle>
+        </RootStyle>
+      </StoreProvider>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={loginTip}
