@@ -6,18 +6,15 @@ import { useStore } from '../../assets/js/store'
 
 const Page: NextPage = () => {
   const router = useRouter()
-  const [dispatch] = useStore()
+  const [state, dispatch] = useStore()
   const connect = async () => {
     try {
       const account = await UP.connect({ email: false, evmKeys: true })
-
       dispatch({
-        account: {
-          displayName: account.username,
-          email: account.email,
-        },
+        account,
       })
-      router.replace('/')
+      console.log('🌊', account)
+      // router.replace('/')
     } catch (error) {}
   }
 

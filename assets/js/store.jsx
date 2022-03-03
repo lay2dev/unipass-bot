@@ -4,7 +4,8 @@ import merge from 'lodash.merge'
 const initState = {
   count: 0,
   account: {
-    displayName: 'UniPass BOT',
+    evmKeys: [],
+    username: 'UniPass BOT',
     email: 'hi@mail.unipass.me',
     photoURL: '/avatar.jpg',
   },
