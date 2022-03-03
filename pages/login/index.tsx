@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import { Button } from '@mui/material'
-import UP from 'up-core-test'
+import UP, { UPAuthMessage, UPAuthResponse } from 'up-core-test'
 import { useRouter } from 'next/router'
 import { useStore } from '../../assets/js/store'
+import api from '../../assets/js/api'
 
 const Page: NextPage = () => {
   const router = useRouter()
@@ -13,8 +14,17 @@ const Page: NextPage = () => {
       dispatch({
         account,
       })
-      console.log('🌊', account)
-      // router.replace('/')
+      const timestamp = String(Date.now())
+      const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
+      const { sig, pubkey, keyType } = ret
+      const res = await api.post('/account/login', {
+        uniPassId: 'sea792',
+        key: pubkey,
+        sig,
+        raw: timestamp,
+      })
+      console.log('🌊', res)
+      router.replace('/')
     } catch (error) {}
   }
 
