@@ -1,6 +1,5 @@
-import Button from '@mui/material/Button'
 import { SeaIcon } from '../components'
-import { SxProps, Theme } from '@mui/material'
+import { SxProps, Theme, Button } from '@mui/material'
 export default function Page(props: { color: string; text: string; sx?: SxProps<Theme> }) {
   return (
     <Button

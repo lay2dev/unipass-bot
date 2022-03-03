@@ -37,11 +37,11 @@ export default function AccountPopover() {
   const anchorRef = useRef(null)
   const [open, setOpen] = useState(false)
 
-  const handleOpen = () => {
+  const bindOpen = () => {
     setOpen(true)
   }
   const router = useRouter()
-  const handleClose = (path) => {
+  const bindClose = (path) => {
     if (path) {
       router.push(path)
     }
@@ -49,6 +49,7 @@ export default function AccountPopover() {
   }
 
   const bindLogout = () => {
+    setOpen(false)
     UP.disconnect()
     router.replace('/login')
   }
@@ -57,7 +58,7 @@ export default function AccountPopover() {
     <>
       <IconButton
         ref={anchorRef}
-        onClick={handleOpen}
+        onClick={bindOpen}
         sx={{
           padding: 0,
           width: 44,
@@ -80,7 +81,7 @@ export default function AccountPopover() {
 
       <MenuPopover
         open={open}
-        onClose={() => handleClose()}
+        onClose={() => bindClose()}
         anchorEl={anchorRef.current}
         sx={{ width: 220 }}
       >
@@ -99,7 +100,7 @@ export default function AccountPopover() {
           <MenuItem
             key={option.label}
             to={option.linkTo}
-            onClick={() => handleClose(option.linkTo)}
+            onClick={() => bindClose(option.linkTo)}
             sx={{ typography: 'body2', py: 1, px: 2.5 }}
           >
             <SeaIcon

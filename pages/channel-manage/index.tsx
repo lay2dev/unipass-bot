@@ -61,7 +61,7 @@ const Page: NextPage = () => {
           <MenuItem value="Aven"># Aven</MenuItem>
         </Select>
         <h3>Message manage</h3>
-        <Paper elevation={12}>
+        <Paper className="sea-paper" elevation={12}>
           <div className="view-channel">
             <h4>View channel</h4>
             <h5>Allows members to view this channel.</h5>
@@ -80,7 +80,7 @@ const Page: NextPage = () => {
             </div>
           </div>
         </Paper>
-        <Paper elevation={12}>
+        <Paper className="sea-paper" elevation={12}>
           <div className="send-message">
             <h4>Send message</h4>
             <h5>Allow those members to publish their own message.</h5>

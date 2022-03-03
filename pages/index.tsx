@@ -39,7 +39,7 @@ const Page: NextPage = () => {
             </MenuItem>
           </Select>
           <h3>Set Requirement</h3>
-          <Paper elevation={12}>
+          <Paper className="sea-paper" elevation={12}>
             <h4>UniPass requirement</h4>
             <div className="sea-operation-box">
               <Select size="small" defaultValue="Level">
@@ -57,7 +57,7 @@ const Page: NextPage = () => {
               </Select>
             </div>
           </Paper>
-          <Paper elevation={12}>
+          <Paper className="sea-paper" elevation={12}>
             <h4>Asset requirement</h4>
             <h5>Contract address</h5>
             <div className="sea-operation-box">

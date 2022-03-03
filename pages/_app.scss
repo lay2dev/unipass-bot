@@ -1,24 +1,25 @@
-#unipass-bot {
-  // components
-  @import '../components/index.scss';
-  // pages
-  @import './index.scss';
-  @import './channel-manage/index.scss';
+// components
+@import '../components';
+// pages
+@import './index';
+@import './channel-manage';
+@import './login';
 
+// global scss
+#unipass-bot {
   h3 {
     padding: 20px 0;
   }
   h5 {
     color: #7a8895;
   }
-  // mui
-  .MuiPaper-root {
+  // sea
+  .sea-paper {
     padding: 20px;
   }
-  .MuiPaper-root + .MuiPaper-root {
+  .sea-paper + .sea-paper {
     margin-top: 20px;
   }
-  // sea
   .sea-operation-box {
     display: flex;
     align-items: center;

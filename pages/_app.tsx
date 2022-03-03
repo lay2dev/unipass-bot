@@ -1,8 +1,10 @@
+import * as React from 'react'
 import ThemeConfig from '../theme'
 import GlobalStyles from '../theme/globalStyles'
 import ScrollToTop from '../layouts/ScrollToTop'
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
+import { Snackbar } from '@mui/material'
 // css
 import 'simplebar/src/simplebar.css'
 import './_app.scss'
@@ -13,10 +15,11 @@ import DashboardSidebar from '../layouts/DashboardSidebar'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-import UP, { UPAuthMessage, UPAuthResponse } from 'up-core-test'
+import UP from 'up-core-test'
 import UPCKB from 'up-ckb-alpha-test'
-import PWCore, { Address, IndexerCollector, AddressType, Amount, ChainID } from '@lay2/pw-core'
+import PWCore from '@lay2/pw-core'
 import env from '../assets/js/env'
+import { useRouter } from 'next/router'
 
 const APP_BAR_MOBILE = 64
 const APP_BAR_DESKTOP = 92
@@ -42,6 +45,8 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [open, setOpen] = useState(false)
+  const [loginTip, setLoginTip] = React.useState(false)
+  const router = useRouter()
   const init = async () => {
     UP.config({
       domain: env.UNIPASS_URL,
@@ -54,19 +59,17 @@ const App = ({ Component, pageProps }: AppProps) => {
       ckbNodeUrl: env.CKB_NODE_URL,
       upLockCodeHash: env.ASSET_LOCK_CODE_HASH as string,
     })
-  }
-  const connect = async () => {
-    const account = await UP.connect({ email: false, evmKeys: true })
-    console.log('account', account)
-    // this.username = account.username
-    // const address: Address = UPCKB.getCKBAddress(this.username)
-    // this.myAddress = address.toCKBAddress()
-    // const indexerCollector = new IndexerCollector(CKB_INDEXER_URL as string)
-    // const balance = await indexerCollector.getBalance(address as Address)
-    // console.log('balance', balance)
-    // this.myBalance = balance.toString()
+    if (!window.sessionStorage.getItem('UP-A')) {
+      if (router.route !== '/login') {
+        router.replace('/login')
+        if (!loginTip) {
+          setLoginTip(true)
+        }
+      }
+    }
   }
   init()
+
   return (
     <ThemeConfig>
       <Head>
@@ -83,6 +86,13 @@ const App = ({ Component, pageProps }: AppProps) => {
           <Component {...pageProps} />
         </MainStyle>
       </RootStyle>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={loginTip}
+        autoHideDuration={3000}
+        message="请先登录"
+        onClose={() => setLoginTip(false)}
+      />
     </ThemeConfig>
   )
 }
