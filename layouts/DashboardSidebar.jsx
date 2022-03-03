@@ -30,8 +30,6 @@ import NavSection from './NavSection'
 //
 import sidebarConfig from './SidebarConfig'
 
-// ----------------------------------------------------------------------
-
 const DRAWER_WIDTH = 280
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -41,22 +39,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   },
 }))
 
-// const AccountStyle = styled('div')(({ theme }) => ({
-//   display: 'flex',
-//   alignItems: 'center',
-//   padding: theme.spacing(2, 2.5),
-//   borderRadius: Number(theme.shape.borderRadius) * 1.5,
-//   backgroundColor: theme.palette.grey[500_12],
-// }))
-
-// ----------------------------------------------------------------------
-
-DashboardSidebar.propTypes = {
-  isOpenSidebar: PropTypes.bool,
-  onCloseSidebar: PropTypes.func,
-}
-
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const router = useRouter()
   const { pathname } = router
 
@@ -189,3 +172,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     </RootStyle>
   )
 }
+
+DashboardSidebar.propTypes = {
+  isOpenSidebar: PropTypes.bool,
+  onCloseSidebar: PropTypes.func,
+}
+
+export default DashboardSidebar
