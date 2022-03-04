@@ -51,7 +51,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       const account = JSON.parse(accountJSON)
       const server = account.servers[0]
       setServer(server.id)
-      dispatch({ account, server })
+      dispatch({ account, server: server.id })
       if (account.accessToken) {
         api.defaults.headers.common['Authorization'] = 'Bearer ' + account.accessToken
         if (router.route === '/login') {

@@ -11,6 +11,7 @@ const api = axios.create({
 declare module 'axios' {
   interface AxiosResponse<T = any> {
     ok: boolean
+    data: T
     msg: string
     token: string
   }
