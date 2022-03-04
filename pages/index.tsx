@@ -5,23 +5,59 @@ import UP, { UPAuthMessage } from 'up-core-test'
 import { SeaSwitch, SeaRole, SeaIcon } from '../components'
 import { useStore } from '../assets/js/store'
 import api from '../assets/js/api'
+import { RangeType, UniPassLevel, Chain } from '../assets/js/role.dto'
 
 interface Role {
   id: string
   name: string
   color: string
+  open: boolean
+  uniPassRequirement: {
+    level: {
+      level: UniPassLevel
+      range: RangeType
+    }
+  }[]
+  assetRequirement: {
+    chain: Chain
+    level: UniPassLevel
+    range: RangeType
+    address: string
+  }[]
 }
 
 const Page: NextPage = () => {
   const [state] = useStore()
-  const [roles, setRoles] = useState([])
-  const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('🌊', event.target.checked)
-  }
+  const [roles, setRoles] = useState([
+    {
+      id: '123',
+      name: 'test',
+      color: 'pink',
+      open: false,
+      uniPassRequirement: [
+        {
+          level: {
+            level: UniPassLevel.LV1,
+            range: RangeType.MoreThanOrEqual,
+          },
+        },
+      ],
+      assetRequirement: [
+        {
+          chain: Chain.eth,
+          level: UniPassLevel.LV0,
+          range: RangeType.Equal,
+          address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
+        },
+      ],
+    } as Role,
+  ])
   useEffect(() => {
     api.get('/roles/' + state.server).then((res) => {
       const roles = res.data
-      setRoles(roles)
+      if (roles) {
+        setRoles(roles)
+      }
     })
   }, [state.server])
 
@@ -33,28 +69,15 @@ const Page: NextPage = () => {
     const { sig, pubkey } = ret
     console.log('server', server)
     console.log('role', role)
+    const { uniPassRequirement, assetRequirement } = role
     const res = await api.post('/roles/rule', {
       guild: server.id,
       id: role.id,
       key: pubkey,
       sig,
       raw: timestamp,
-      uniPassRequirement: [
-        {
-          level: {
-            level: 1,
-            range: 0,
-          },
-        },
-      ],
-      assetRequirement: [
-        {
-          chain: 'eth',
-          level: 0,
-          range: 2,
-          address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
-        },
-      ],
+      uniPassRequirement,
+      assetRequirement,
     })
     console.log('🌊', res)
   }
@@ -66,7 +89,11 @@ const Page: NextPage = () => {
             <div className="info">
               <h3>Role</h3>
               <SeaRole color={e.color} text={e.name} />
-              <SeaSwitch className="switch" onChange={bindSwitch} defaultChecked={true} />
+              <SeaSwitch
+                className="switch"
+                onChange={(event, open) => (roles[i].open = open)}
+                defaultChecked={e.open}
+              />
               <IconButton sx={{ marginLeft: '8px' }}>
                 <SeaIcon icon="ic:round-keyboard-arrow-up" />
               </IconButton>
