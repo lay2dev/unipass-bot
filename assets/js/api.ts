@@ -3,7 +3,9 @@ import axios from 'axios'
 const api = axios.create({
   baseURL: 'https://t.api.unipass.id/admin',
   timeout: 25000,
-  headers: {},
+  headers: {
+    // Authorization: 'Bearer xxxxxx',
+  },
 })
 
 declare module 'axios' {

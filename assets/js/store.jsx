@@ -2,12 +2,17 @@ import React, { createContext, useReducer, useContext } from 'react'
 import merge from 'lodash.merge'
 
 const initState = {
-  count: 0,
+  server: '',
   account: {
+    servers: [],
     evmKeys: [],
     username: 'UniPass BOT',
     email: 'hi@mail.unipass.me',
     photoURL: '/avatar.jpg',
+    accessToken: '',
+    refreshToken: '',
+    discordUuid: '',
+    timestamp: 0,
   },
 }
 

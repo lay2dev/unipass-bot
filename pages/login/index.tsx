@@ -11,20 +11,35 @@ const Page: NextPage = () => {
   const connect = async () => {
     try {
       const account = await UP.connect({ email: false, evmKeys: true })
-      dispatch({
-        account,
-      })
       const timestamp = String(Date.now())
       const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
-      const { sig, pubkey, keyType } = ret
+      const { sig, pubkey } = ret
       const res = await api.post('/account/login', {
-        uniPassId: 'sea792',
+        uniPassId: account.username,
         key: pubkey,
         sig,
         raw: timestamp,
       })
-      console.log('🌊', res)
-      router.replace('/')
+      const { username, email, evmKeys } = account
+      const { discordUuid, accessToken, refreshToken } = res.data
+      if (accessToken) {
+        api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
+        const res = await api.get('/guilds')
+        const servers = res.data
+        const account = {
+          servers,
+          timestamp,
+          accessToken,
+          refreshToken,
+          discordUuid,
+          username,
+          email,
+          evmKeys,
+        }
+        dispatch({ account })
+        window.localStorage.setItem('UP-BOT', JSON.stringify(account))
+        router.replace('/')
+      }
     } catch (error) {}
   }
 

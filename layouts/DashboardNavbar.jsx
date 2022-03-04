@@ -8,8 +8,7 @@ import Searchbar from './Searchbar'
 import AccountPopover from './AccountPopover'
 import LanguagePopover from './LanguagePopover'
 import NotificationsPopover from './NotificationsPopover'
-
-// ----------------------------------------------------------------------
+import { useStore } from '../assets/js/store'
 
 const DRAWER_WIDTH = 280
 const APPBAR_MOBILE = 64
@@ -32,8 +31,6 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
     padding: theme.spacing(0, 5),
   },
 }))
-
-// ----------------------------------------------------------------------
 
 DashboardNavbar.propTypes = {
   onOpenSidebar: PropTypes.func,

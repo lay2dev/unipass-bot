@@ -1,5 +1,5 @@
 import * as React from 'react'
-
+import { Snackbar } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -7,15 +7,12 @@ import { useRouter } from 'next/router'
 import { styled } from '@mui/material/styles'
 import {
   Box,
-  Link,
   Button,
   Drawer,
   Typography,
-  Avatar,
   Stack,
   MenuItem,
   Select,
-  InputLabel,
   FormHelperText,
   FormControl,
 } from '@mui/material'
@@ -25,8 +22,10 @@ import useResponsive from './useResponsive'
 import Logo from './Logo'
 import Scrollbar from './Scrollbar'
 import NavSection from './NavSection'
-//
 import sidebarConfig from './SidebarConfig'
+// js
+import api from '../assets/js/api'
+import { useStore } from '../assets/js/store'
 
 const DRAWER_WIDTH = 280
 
@@ -40,27 +39,54 @@ const RootStyle = styled('div')(({ theme }) => ({
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const router = useRouter()
   const { pathname } = router
-
   const isDesktop = useResponsive('up', 'lg')
-
+  const [loginTip, setLoginTip] = React.useState(false)
+  const [state, dispatch] = useStore()
+  const { servers } = state.account
+  const [server, setServer] = React.useState(0)
   // server select
-  const [server, setServer] = React.useState('UniPass')
-  const bindServer = (event) => {
-    const v = event.target.value
-    if (v === '+') {
-      console.log('🌊', v)
-      return
+  const init = () => {
+    try {
+      const accountJSON = window.localStorage.getItem('UP-BOT') || ''
+      const account = JSON.parse(accountJSON)
+      const server = account.servers[0]
+      setServer(server.id)
+      dispatch({ account, server })
+      if (account.accessToken) {
+        api.defaults.headers.common['Authorization'] = 'Bearer ' + account.accessToken
+        if (router.route === '/login') {
+          router.replace('/')
+        }
+        return
+      }
+    } catch (error) {}
+    if (router.route !== '/login') {
+      router.replace('/login')
+      if (!loginTip) {
+        setLoginTip(true)
+      }
     }
-    setServer(v)
   }
-
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar()
     }
+    init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
-
+  const bindServer = (event) => {
+    const v = event.target.value
+    if (v === '+') {
+      return
+    }
+    dispatch({ server: v })
+    setServer(v)
+  }
+  const bindAddNew = () => {
+    window.open(
+      'https://discord.com/api/oauth2/authorize?client_id=947674530669793320&permissions=8&scope=bot applications.commands',
+    )
+  }
   const renderContent = (
     <Scrollbar
       sx={{
@@ -75,9 +101,14 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <FormControl fullWidth>
           <Select size="small" value={server} onChange={bindServer}>
-            <MenuItem value="UniPass">UniPass</MenuItem>
-            <MenuItem value="Aven">Aven</MenuItem>
-            <MenuItem value="+">+ Add new server</MenuItem>
+            {servers.map((e, i) => (
+              <MenuItem key={i} value={e.id}>
+                {e.name}
+              </MenuItem>
+            ))}
+            <MenuItem value="+" onClick={bindAddNew}>
+              + Add new server
+            </MenuItem>
           </Select>
           <FormHelperText>Choose your server</FormHelperText>
         </FormControl>
@@ -119,7 +150,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       </Box>
     </Scrollbar>
   )
-
   return (
     <RootStyle>
       {!isDesktop && (
@@ -149,6 +179,14 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           {renderContent}
         </Drawer>
       )}
+
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={loginTip}
+        autoHideDuration={3000}
+        message="请先登录"
+        onClose={() => setLoginTip(false)}
+      />
     </RootStyle>
   )
 }

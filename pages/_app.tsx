@@ -1,24 +1,35 @@
-import * as React from 'react'
+import React from 'react'
 import ThemeConfig from '../theme'
 import GlobalStyles from '../theme/globalStyles'
 import ScrollToTop from '../layouts/ScrollToTop'
 import { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Snackbar } from '@mui/material'
 // css
 import 'simplebar/src/simplebar.css'
 import './_app.scss'
+import UP from 'up-core-test'
+import UPCKB from 'up-ckb-alpha-test'
+import PWCore from '@lay2/pw-core'
+// js
+import env from '../assets/js/env'
+import { StoreProvider } from '../assets/js/store'
 // layouts
 import DashboardNavbar from '../layouts/DashboardNavbar'
 import DashboardSidebar from '../layouts/DashboardSidebar'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
-import UP from 'up-core-test'
-import UPCKB from 'up-ckb-alpha-test'
-import PWCore from '@lay2/pw-core'
-import { useRouter } from 'next/router'
-import env from '../assets/js/env'
-import { StoreProvider } from '../assets/js/store'
+
+UP.config({
+  domain: env.UNIPASS_URL,
+})
+PWCore.setChainId(Number(env.PW_CORE_CHAIN_ID))
+UPCKB.config({
+  upSnapshotUrl: env.AGGREGATOR_URL + '/snapshot/',
+  chainID: Number(env.PW_CORE_CHAIN_ID),
+  ckbIndexerUrl: env.CKB_INDEXER_URL,
+  ckbNodeUrl: env.CKB_NODE_URL,
+  upLockCodeHash: env.ASSET_LOCK_CODE_HASH as string,
+})
 
 const APP_BAR_MOBILE = 64
 const APP_BAR_DESKTOP = 92
@@ -44,31 +55,6 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 const App = ({ Component, pageProps }: AppProps) => {
   const [open, setOpen] = useState(false)
-  const [loginTip, setLoginTip] = React.useState(false)
-  const router = useRouter()
-  const init = async () => {
-    UP.config({
-      domain: env.UNIPASS_URL,
-    })
-    PWCore.setChainId(Number(env.PW_CORE_CHAIN_ID))
-    UPCKB.config({
-      upSnapshotUrl: env.AGGREGATOR_URL + '/snapshot/',
-      chainID: Number(env.PW_CORE_CHAIN_ID),
-      ckbIndexerUrl: env.CKB_INDEXER_URL,
-      ckbNodeUrl: env.CKB_NODE_URL,
-      upLockCodeHash: env.ASSET_LOCK_CODE_HASH as string,
-    })
-    if (!window.sessionStorage.getItem('UP-A')) {
-      if (router.route !== '/login') {
-        router.replace('/login')
-        if (!loginTip) {
-          setLoginTip(true)
-        }
-      }
-    }
-  }
-  init()
-
   return (
     <ThemeConfig>
       <Head>
@@ -87,13 +73,6 @@ const App = ({ Component, pageProps }: AppProps) => {
           </MainStyle>
         </RootStyle>
       </StoreProvider>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={loginTip}
-        autoHideDuration={3000}
-        message="请先登录"
-        onClose={() => setLoginTip(false)}
-      />
     </ThemeConfig>
   )
 }

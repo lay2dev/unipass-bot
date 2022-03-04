@@ -53,6 +53,7 @@ export default function AccountPopover() {
   const bindLogout = () => {
     setOpen(false)
     UP.disconnect()
+    window.localStorage.removeItem('UP-BOT')
     router.replace('/login')
   }
 
