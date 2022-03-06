@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 import { Button, IconButton, MenuItem, Select, TextField, Paper } from '@mui/material'
@@ -16,73 +17,19 @@ import {
 
 const Page: NextPage = () => {
   const [state] = useStore()
-  const [roles, setRoles]: [Role[], any] = useState([
-    // {
-    //   id: '123',
-    //   guild: '213123',
-    //   name: 'test',
-    //   color: 'pink',
-    //   open: false,
-    //   uniPassRequirement: [],
-    //   assetRequirement: [
-    //     {
-    //       chain: Chain.eth,
-    //       address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
-    //       range: RangeType.Equal,
-    //       amount: 20,
-    //     },
-    //     {
-    //       chain: Chain.eth,
-    //       address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
-    //       range: RangeType.Equal,
-    //       amount: 200,
-    //     },
-    //   ],
-    // } as Role,
-    // {
-    //   id: '123',
-    //   guild: '213123',
-    //   name: 'du',
-    //   color: 'black',
-    //   open: false,
-    //   uniPassRequirement: [
-    //     {
-    //       level: {
-    //         level: UniPassLevel.LV1,
-    //         range: RangeType.MoreThanOrEqual,
-    //       },
-    //     },
-    //     {
-    //       level: {
-    //         level: UniPassLevel.LV2,
-    //         range: RangeType.LessThanOrEqual,
-    //       },
-    //     },
-    //     {
-    //       level: {
-    //         level: UniPassLevel.LV4,
-    //         range: RangeType.Equal,
-    //       },
-    //     },
-    //   ],
-    //   assetRequirement: [],
-    // } as Role,
-  ])
+  const [roles, setRoles]: [Role[], any] = useState([])
   useEffect(() => {
     api.get('/roles/' + state.server).then((res) => {
       const roles = res.data
       if (roles) {
-        console.log('🌊', roles)
+        console.log('roles', roles)
         setRoles(roles)
       }
     })
   }, [state.server])
 
   const bindSave = async (role: Role) => {
-    console.log('🌊', role)
-    if (true) {
-      return
-    }
+    console.log('role', role)
     const account = state.account
     const server = account.servers.find((e: { id: string }) => e.id === state.server)
     const timestamp = String(Date.now())
@@ -100,7 +47,9 @@ const Page: NextPage = () => {
       assetRequirement,
     })
     if (res.code === 2000) {
+      message.success('保存成功!')
     } else {
+      message.error('保存失败!')
     }
   }
   const uniPassRequirementFormat = (e: UniPassRequirement) => {
@@ -123,6 +72,25 @@ const Page: NextPage = () => {
       setRoles([...roles])
     } else if (type === 'asset') {
       roles[i].assetRequirement.splice(i2, 1)
+      setRoles([...roles])
+    }
+  }
+  const bindAdd = (type: string, i: number) => {
+    if (type === 'unipass') {
+      roles[i].uniPassRequirement.push({
+        level: {
+          level: UniPassLevel.LV0,
+          range: RangeType.MoreThanOrEqual,
+        },
+      })
+      setRoles([...roles])
+    } else if (type === 'asset') {
+      roles[i].assetRequirement.push({
+        chain: Chain.eth,
+        address: '',
+        range: RangeType.MoreThanOrEqual,
+        amount: 0,
+      })
       setRoles([...roles])
     }
   }
@@ -180,7 +148,11 @@ const Page: NextPage = () => {
                         <MenuItem value={1}>{'≤'}</MenuItem>
                         <MenuItem value={2}>{'='}</MenuItem>
                       </Select>
-                      <Select size="small" defaultValue={e.level.level}>
+                      <Select
+                        size="small"
+                        defaultValue={e.level.level}
+                        onChange={(event) => (e.level.level = Number(event.target.value))}
+                      >
                         {[0, 1, 2, 3, 4, 5, 6].map((lv) => (
                           <MenuItem key={lv} value={lv}>
                             Lv{lv}
@@ -211,12 +183,12 @@ const Page: NextPage = () => {
                       </Select>
                       <TextField
                         size="small"
-                        disabled
-                        value={asset.address}
+                        defaultValue={asset.address}
+                        onChange={(event) => (asset.address = event.target.value)}
                         variant="outlined"
                         placeholder="Contract address"
                       />
-                      <Button>NFT</Button>
+                      <Button onClick={() => message.warn('NFT 弹窗，正在开发')}>NFT</Button>
                     </div>
                     <h5>Amount</h5>
                     <div className="sea-operation-box">
@@ -228,7 +200,12 @@ const Page: NextPage = () => {
                         <MenuItem value={1}>{'≤'}</MenuItem>
                         <MenuItem value={2}>{'='}</MenuItem>
                       </Select>
-                      <TextField size="small" value={asset.amount} type="number" />
+                      <TextField
+                        size="small"
+                        defaultValue={asset.amount}
+                        onChange={(event) => (asset.amount = Number(event.target.value))}
+                        type="number"
+                      />
                     </div>
                   </div>
                   <IconButton
@@ -244,8 +221,12 @@ const Page: NextPage = () => {
             <div className="new-requirement">
               <h4>Add a new requirement</h4>
               <div className="sea-operation-box">
-                <Button variant="outlined">UniPass requirement</Button>
-                <Button variant="contained">Asset requirement</Button>
+                <Button variant="outlined" onClick={() => bindAdd('unipass', i)}>
+                  UniPass requirement
+                </Button>
+                <Button variant="contained" onClick={() => bindAdd('asset', i)}>
+                  Asset requirement
+                </Button>
               </div>
             </div>
             <div className="save">
