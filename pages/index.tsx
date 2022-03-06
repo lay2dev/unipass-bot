@@ -55,13 +55,13 @@ const Page: NextPage = () => {
         {
           level: {
             level: UniPassLevel.LV2,
-            range: RangeType.MoreThanOrEqual,
+            range: RangeType.LessThanOrEqual,
           },
         },
         {
           level: {
             level: UniPassLevel.LV4,
-            range: RangeType.MoreThanOrEqual,
+            range: RangeType.Equal,
           },
         },
       ],
@@ -170,8 +170,12 @@ const Page: NextPage = () => {
                         <MenuItem value={1}>{'≤'}</MenuItem>
                         <MenuItem value={2}>{'='}</MenuItem>
                       </Select>
-                      <Select size="small" defaultValue="Lv4">
-                        <MenuItem value="Lv4">{'Lv4'}</MenuItem>
+                      <Select size="small" defaultValue={e.level.level}>
+                        {[0, 1, 2, 3, 4, 5, 6].map((lv) => (
+                          <MenuItem key={lv} value={lv}>
+                            Lv{lv}
+                          </MenuItem>
+                        ))}
                       </Select>
                     </div>
                   </Paper>
