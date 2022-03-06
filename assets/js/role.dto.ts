@@ -28,12 +28,15 @@ export interface AssetRequirement {
   chain: Chain
   address: string
   range: RangeType
-  level: number
+  amount: number
 }
 
-export interface RolesData {
+export interface Role {
   id: string
   guild: string
+  name: string
+  color: string
+  open: boolean
   uniPassRequirement: UniPassRequirement[]
   assetRequirement: AssetRequirement[]
 }

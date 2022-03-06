@@ -5,36 +5,45 @@ import UP, { UPAuthMessage } from 'up-core-test'
 import { SeaSwitch, SeaRole, SeaIcon } from '../components'
 import { useStore } from '../assets/js/store'
 import api from '../assets/js/api'
-import { RangeType, UniPassLevel, Chain } from '../assets/js/role.dto'
-
-interface AssetRequirement {
-  chain: Chain
-  level: UniPassLevel
-  range: RangeType
-  address: string
-}
-interface UniPassRequirement {
-  level: {
-    level: UniPassLevel
-    range: RangeType
-  }
-}
-interface Role {
-  id: string
-  name: string
-  color: string
-  open: boolean
-  uniPassRequirement: UniPassRequirement[]
-  assetRequirement: AssetRequirement[]
-}
+import {
+  RangeType,
+  UniPassLevel,
+  Chain,
+  Role,
+  UniPassRequirement,
+  AssetRequirement,
+} from '../assets/js/role.dto'
 
 const Page: NextPage = () => {
   const [state] = useStore()
   const [roles, setRoles]: [Role[], any] = useState([
     {
       id: '123',
+      guild: '213123',
       name: 'test',
       color: 'pink',
+      open: false,
+      uniPassRequirement: [],
+      assetRequirement: [
+        {
+          chain: Chain.eth,
+          address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
+          range: RangeType.Equal,
+          amount: 20,
+        },
+        {
+          chain: Chain.eth,
+          address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
+          range: RangeType.Equal,
+          amount: 200,
+        },
+      ],
+    } as Role,
+    {
+      id: '123',
+      guild: '213123',
+      name: 'du',
+      color: 'black',
       open: false,
       uniPassRequirement: [
         {
@@ -43,21 +52,28 @@ const Page: NextPage = () => {
             range: RangeType.MoreThanOrEqual,
           },
         },
-      ],
-      assetRequirement: [
         {
-          chain: Chain.eth,
-          level: UniPassLevel.LV0,
-          range: RangeType.Equal,
-          address: '0xAF0459c2Aba429f75c99E6238C7A8470dB99E252',
+          level: {
+            level: UniPassLevel.LV2,
+            range: RangeType.MoreThanOrEqual,
+          },
+        },
+        {
+          level: {
+            level: UniPassLevel.LV4,
+            range: RangeType.MoreThanOrEqual,
+          },
         },
       ],
+      assetRequirement: [],
     } as Role,
   ])
+  console.log('🌊', roles)
   // useEffect(() => {
   //   api.get('/roles/' + state.server).then((res) => {
   //     const roles = res.data
   //     if (roles) {
+  //       console.log('🌊', roles)
   //       setRoles(roles)
   //     }
   //   })
@@ -141,51 +157,57 @@ const Page: NextPage = () => {
                 </MenuItem>
               </Select>
               <h3>Set Requirement</h3>
-              <Paper className="sea-paper" elevation={12}>
-                <h4>UniPass requirement</h4>
-                <div className="sea-operation-box">
-                  <Select size="small" defaultValue="Level">
-                    <MenuItem value="Level">Level</MenuItem>
-                  </Select>
-                  <Select size="small" defaultValue=">=">
-                    <MenuItem value=">=">{'>='}</MenuItem>
-                    <MenuItem value="<=">{'<='}</MenuItem>
-                    <MenuItem value="=">{'='}</MenuItem>
-                    <MenuItem value=">">{'>'}</MenuItem>
-                    <MenuItem value="<">{'<'}</MenuItem>
-                  </Select>
-                  <Select size="small" defaultValue="Lv4">
-                    <MenuItem value="Lv4">{'Lv4'}</MenuItem>
-                  </Select>
-                </div>
-              </Paper>
-              <Paper className="sea-paper" elevation={12}>
-                <h4>Asset requirement</h4>
-                <h5>Contract address</h5>
-                <div className="sea-operation-box">
-                  <Select size="small" defaultValue="Ethereum">
-                    <MenuItem value="Ethereum">Ethereum</MenuItem>
-                    <MenuItem value="BTC">BTC</MenuItem>
-                  </Select>
-                  <TextField size="small" variant="outlined" placeholder="Contract address" />
-                  <Button>NFT</Button>
-                </div>
-                <h5>Amount</h5>
-                <div className="sea-operation-box">
-                  <Select size="small" defaultValue="Amount">
-                    <MenuItem value="Amount">Amount</MenuItem>
-                    <MenuItem value="CKB">CKB</MenuItem>
-                  </Select>
-                  <Select size="small" defaultValue=">=">
-                    <MenuItem value=">=">{'>='}</MenuItem>
-                    <MenuItem value="<=">{'<='}</MenuItem>
-                    <MenuItem value="=">{'='}</MenuItem>
-                    <MenuItem value=">">{'>'}</MenuItem>
-                    <MenuItem value="<">{'<'}</MenuItem>
-                  </Select>
-                  <TextField size="small" defaultValue={1} type="number" />
-                </div>
-              </Paper>
+              {e.uniPassRequirement.length > 0 &&
+                e.uniPassRequirement.map((e, i) => (
+                  <Paper key={i} className="sea-paper" elevation={12}>
+                    <h4>UniPass requirement</h4>
+                    <div className="sea-operation-box">
+                      <Select size="small" defaultValue="Level" disabled>
+                        <MenuItem value="Level">Level</MenuItem>
+                      </Select>
+                      <Select size="small" defaultValue={e.level.range}>
+                        <MenuItem value={0}>{'≥'}</MenuItem>
+                        <MenuItem value={1}>{'≤'}</MenuItem>
+                        <MenuItem value={2}>{'='}</MenuItem>
+                      </Select>
+                      <Select size="small" defaultValue="Lv4">
+                        <MenuItem value="Lv4">{'Lv4'}</MenuItem>
+                      </Select>
+                    </div>
+                  </Paper>
+                ))}
+              {e.assetRequirement.length > 0 &&
+                e.assetRequirement.map((e, i) => (
+                  <Paper key={i} className="sea-paper" elevation={12}>
+                    <h4>Asset requirement</h4>
+                    <h5>Contract address</h5>
+                    <div className="sea-operation-box">
+                      <Select size="small" defaultValue={e.chain} disabled>
+                        <MenuItem value={Chain.eth}>Ethereum</MenuItem>
+                      </Select>
+                      <TextField
+                        size="small"
+                        disabled
+                        value={e.address}
+                        variant="outlined"
+                        placeholder="Contract address"
+                      />
+                      <Button>NFT</Button>
+                    </div>
+                    <h5>Amount</h5>
+                    <div className="sea-operation-box">
+                      <Select size="small" defaultValue="Amount" disabled>
+                        <MenuItem value="Amount">Amount</MenuItem>
+                      </Select>
+                      <Select size="small" defaultValue={e.range}>
+                        <MenuItem value={0}>{'≥'}</MenuItem>
+                        <MenuItem value={1}>{'≤'}</MenuItem>
+                        <MenuItem value={2}>{'='}</MenuItem>
+                      </Select>
+                      <TextField size="small" value={e.amount} type="number" />
+                    </div>
+                  </Paper>
+                ))}
               <div className="new-requirement">
                 <h4>Add a new requirement</h4>
                 <div className="sea-operation-box">
