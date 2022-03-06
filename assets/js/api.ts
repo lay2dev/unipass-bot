@@ -1,7 +1,7 @@
 // import { ElMessage } from 'element-plus'
 import axios from 'axios'
 const api = axios.create({
-  // baseURL: 'https://t.api.unipass.id/admin',
+  baseURL: 'https://t.api.unipass.id/admin',
   timeout: 25000,
   headers: {
     // Authorization: 'Bearer xxxxxx',
@@ -10,10 +10,9 @@ const api = axios.create({
 
 declare module 'axios' {
   interface AxiosResponse<T = any> {
-    ok: boolean
+    code: number
+    message: string
     data: T
-    msg: string
-    token: string
   }
 }
 
