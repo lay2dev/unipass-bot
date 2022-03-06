@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { Snackbar } from '@mui/material'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -23,6 +22,7 @@ import Logo from './Logo'
 import Scrollbar from './Scrollbar'
 import NavSection from './NavSection'
 import sidebarConfig from './SidebarConfig'
+import { message } from 'antd'
 // js
 import api from '../assets/js/api'
 import { useStore } from '../assets/js/store'
@@ -40,7 +40,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const router = useRouter()
   const { pathname } = router
   const isDesktop = useResponsive('up', 'lg')
-  const [loginTip, setLoginTip] = React.useState(false)
   const [state, dispatch] = useStore()
   const { servers } = state.account
   const [server, setServer] = React.useState(0)
@@ -62,9 +61,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
     } catch (error) {}
     if (router.route !== '/login') {
       router.replace('/login')
-      if (!loginTip) {
-        setLoginTip(true)
-      }
+      message.info('请先登录')
     }
   }
   useEffect(() => {
@@ -179,14 +176,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           {renderContent}
         </Drawer>
       )}
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={loginTip}
-        autoHideDuration={3000}
-        message="请先登录"
-        onClose={() => setLoginTip(false)}
-      />
     </RootStyle>
   )
 }
