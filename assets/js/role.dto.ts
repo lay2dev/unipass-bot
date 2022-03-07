@@ -17,6 +17,7 @@ export enum UniPassLevel {
 export enum Chain {
   eth = 'eth',
 }
+
 export interface UniPassRequirement {
   level: {
     range: RangeType
@@ -32,11 +33,16 @@ export interface AssetRequirement {
 }
 
 export interface Role {
-  id: string
   guild: string
+  id: string
   name: string
   color: number
-  open: boolean
+}
+
+export interface Rule {
+  ruleId: number
+  role: Role
   uniPassRequirement: UniPassRequirement[]
   assetRequirement: AssetRequirement[]
+  open: boolean
 }
