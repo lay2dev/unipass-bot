@@ -1,49 +1,47 @@
 #page-channel-manage {
-  .info {
-    display: flex;
-    align-items: center;
-    .sea-channel {
-      margin-left: 20px;
-    }
-    .switch {
-      margin-left: auto;
-    }
-  }
-  .tip-box {
-    padding: 20px;
-    background: #e0e6ec;
-    border-radius: 4px;
-    list-style: auto;
-    color: #7a8895;
-    display: flex;
-    align-items: center;
-    .one {
-      border-radius: 40px;
-      display: flex;
-      align-items: center;
-      background: #ffffff83;
-      padding: 12px 20px;
-      > .sea-icon {
-        font-size: 32px;
+  .sea-box-one {
+    .info {
+      width: 100%;
+      margin-right: 10px;
+      .title {
+        display: flex;
+        align-items: center;
+        .sea-channel {
+          margin-left: 20px;
+        }
+        .switch {
+          margin-left: auto;
+        }
       }
-      .sea-role {
-        margin-left: 20px;
+      .tip-box {
+        padding: 20px;
+        background: #e0e6ec;
+        border-radius: 4px;
+        list-style: auto;
+        color: #7a8895;
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        .one {
+          border-radius: 40px;
+          display: flex;
+          align-items: center;
+          background: #ffffff83;
+          padding: 12px 20px;
+          > .sea-icon {
+            font-size: 32px;
+          }
+          .sea-role {
+            margin-left: 20px;
+          }
+        }
+        .one + .one {
+          margin-left: 32px;
+        }
       }
     }
-    .one + .one {
-      margin-left: 32px;
-    }
-  }
-  .select {
-    min-width: 300px;
-  }
-  .save {
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
-    .submit {
-      padding-left: 120px;
-      padding-right: 120px;
+    .select {
+      min-width: 300px;
     }
   }
 }

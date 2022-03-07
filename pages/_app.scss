@@ -32,8 +32,19 @@
   }
   .sea-box-one {
     border: 2px solid #e0e6ec;
-    padding: 20px;
     border-radius: 24px;
+    .save {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      .submit {
+        padding-left: 120px;
+        padding-right: 120px;
+      }
+    }
+  }
+  .sea-box-one::before {
+    display: none;
   }
   .sea-box-one + .sea-box-one {
     margin-top: 40px;
@@ -41,6 +52,15 @@
   .sea-new-box {
     text-align: center;
     margin-top: 24px;
+  }
+  .sea-h3 {
+    display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
   }
 }
 // antd
