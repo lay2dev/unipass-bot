@@ -63,8 +63,13 @@ const Page: NextPage = () => {
     const suffix = address.slice(-4)
     return prefix + '...' + suffix
   }
-  const formatColor = (color: string) => {
-    // return `#${String(color).slice(0, 6)}`
+  const formatColor = (num: number) => {
+    num >>>= 0
+    const r = (num & 0xff0000) >>> 16
+    const g = (num & 0xff00) >>> 8
+    const b = num & 0xff
+    // a = ((num & 0xff000000) >>> 24) / 255
+    const color = `rgb(${[r, g, b].join(',')})`
     return color
   }
   const assetRequirementFormat = (e: AssetRequirement) => {

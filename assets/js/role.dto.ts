@@ -35,7 +35,7 @@ export interface Role {
   id: string
   guild: string
   name: string
-  color: string
+  color: number
   open: boolean
   uniPassRequirement: UniPassRequirement[]
   assetRequirement: AssetRequirement[]
