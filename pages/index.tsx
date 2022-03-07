@@ -48,7 +48,7 @@ const Page: NextPage = () => {
       }
     })
   }, [state.server])
-  const bindSave = async (rule: Rule) => {
+  const bindSave = async (rule: Rule, i: number) => {
     console.log('rule', rule)
     // sign
     const account = state.account
@@ -60,7 +60,7 @@ const Page: NextPage = () => {
     const res = await api.post('/roles/rule', {
       guildId: server.id,
       roleId: rule.role.id,
-      id: 0,
+      id: rule.ruleId,
       key: pubkey,
       sig,
       raw: timestamp,
@@ -69,13 +69,17 @@ const Page: NextPage = () => {
       assetRequirement,
     })
     if (res.code === 2000) {
+      rules[i] = res.data.ruleId
       message.success('保存成功!')
     } else {
       message.error('保存失败!')
     }
   }
   const uniPassRequirementFormat = (e: UniPassRequirement) => {
-    return `UniPass Level >= Lv${e.level.level}`
+    return `UniPass Level ${formatRange(e.level.range)} Lv${e.level.level}`
+  }
+  const assetRequirementFormat = (e: AssetRequirement) => {
+    return `Contract ${formatAddress(e.address)}, amount ${formatRange(e.range)} ${e.amount}`
   }
   const formatAddress = function (address: string) {
     if (!address) {
@@ -102,9 +106,6 @@ const Page: NextPage = () => {
     } else if (range === RangeType.LessThanOrEqual) {
       return '≤'
     }
-  }
-  const assetRequirementFormat = (e: AssetRequirement) => {
-    return `Contract ${formatAddress(e.address)}, amount ${formatRange(e.range)} ${e.amount}`
   }
   const bindDel = (type: string, i: number, i2: number) => {
     if (type === 'unipass') {
@@ -168,7 +169,7 @@ const Page: NextPage = () => {
               <Typography className="info">
                 <div className="title">
                   <div className="sea-h3">Rule</div>
-                  <SeaRole color={formatColor(e.role.color)} text={e.role.name} />
+                  <SeaRole color={formatColor(e.role?.color)} text={e.role?.name} />
                   <SeaSwitch
                     onClick={(event) => {
                       event.stopPropagation()
@@ -210,7 +211,14 @@ const Page: NextPage = () => {
                           <Select size="small" defaultValue="Level" disabled>
                             <MenuItem value="Level">Level</MenuItem>
                           </Select>
-                          <Select size="small" defaultValue={e.level.range}>
+                          <Select
+                            size="small"
+                            value={e.level.range}
+                            onChange={(event) => {
+                              e.level.range = Number(event.target.value)
+                              setRules([...rules])
+                            }}
+                          >
                             <MenuItem value={0}>{'≥'}</MenuItem>
                             <MenuItem value={1}>{'≤'}</MenuItem>
                             <MenuItem value={2}>{'='}</MenuItem>
@@ -218,7 +226,10 @@ const Page: NextPage = () => {
                           <Select
                             size="small"
                             defaultValue={e.level.level}
-                            onChange={(event) => (e.level.level = Number(event.target.value))}
+                            onChange={(event) => {
+                              e.level.level = Number(event.target.value)
+                              setRules([...rules])
+                            }}
                           >
                             {[0, 1, 2, 3, 4, 5, 6].map((lv) => (
                               <MenuItem key={lv} value={lv}>
@@ -251,7 +262,10 @@ const Page: NextPage = () => {
                           <TextField
                             size="small"
                             defaultValue={asset.address}
-                            onChange={(event) => (asset.address = event.target.value)}
+                            onChange={(event) => {
+                              asset.address = event.target.value
+                              setRules([...rules])
+                            }}
                             variant="outlined"
                             placeholder="Contract address"
                           />
@@ -312,7 +326,7 @@ const Page: NextPage = () => {
                     variant="contained"
                     color="secondary"
                     onClick={() => {
-                      bindSave(e)
+                      bindSave(e, i)
                     }}
                   >
                     Save
