@@ -1,9 +1,19 @@
 import type { NextPage } from 'next'
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useStore } from '../../assets/js/store'
 import { SeaSwitch, SeaRole, SeaIcon, SeaChannel } from '../../components'
 import { Button, IconButton, MenuItem, Select, SelectChangeEvent, Paper } from '@mui/material'
+import api from '../../assets/js/api'
 
 const Page: NextPage = () => {
+  const [state] = useStore()
+  const [roles, setRoles] = useState([])
+  useEffect(() => {
+    api.get('/channels/' + state.server).then((res) => {
+      console.log('🌊', res)
+    })
+  }, [state.server])
+
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('🌊', event.target.checked)
   }

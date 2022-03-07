@@ -26,6 +26,7 @@ import { message } from 'antd'
 // js
 import api from '../assets/js/api'
 import { useStore } from '../assets/js/store'
+import env from '../assets/js/env'
 
 const DRAWER_WIDTH = 280
 
@@ -80,9 +81,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
     setServer(v)
   }
   const bindAddNew = () => {
-    window.open(
-      'https://discord.com/api/oauth2/authorize?client_id=947674530669793320&permissions=8&scope=bot applications.commands',
-    )
+    window.open(env.DISCORD_URL)
   }
   const renderContent = (
     <Scrollbar

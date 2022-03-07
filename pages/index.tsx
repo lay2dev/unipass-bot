@@ -63,6 +63,10 @@ const Page: NextPage = () => {
     const suffix = address.slice(-4)
     return prefix + '...' + suffix
   }
+  const formatColor = (color: string) => {
+    // return `#${String(color).slice(0, 6)}`
+    return color
+  }
   const assetRequirementFormat = (e: AssetRequirement) => {
     return `Contract ${formatAddress(e.address)}, amount ≥ 100`
   }
@@ -101,7 +105,7 @@ const Page: NextPage = () => {
           <div key={i} className="sea-box-one">
             <div className="info">
               <h3>Role</h3>
-              <SeaRole color={e.color} text={e.name} />
+              <SeaRole color={formatColor(e.color)} text={e.name} />
               <SeaSwitch
                 className="switch"
                 onChange={(event, open) => (roles[i].open = open)}
