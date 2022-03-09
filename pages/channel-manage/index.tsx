@@ -13,9 +13,20 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material'
+
 import api from '../../assets/js/api'
 import { ChannelRule, Channel, Role } from '../../assets/js/role.dto'
+import { message } from 'antd'
 
 const Page: NextPage = () => {
   const [state] = useStore()
@@ -70,26 +81,58 @@ const Page: NextPage = () => {
       setRules([...rules])
     }
   }
-  const [viewChannel, setViewChannel] = React.useState([
-    {
-      color: '#c4505e',
-      lv: 'UP Lv4',
-    },
-    {
-      color: '#e9c0a0',
-      lv: 'UP Lv3',
-    },
-    {
-      color: '#4fab9f',
-      lv: 'UP Lv1',
-    },
-    {
-      color: '#3b7669',
-      lv: 'UP Lv2',
-    },
-  ])
   const bindRuleDel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, i: number) => {
     event.stopPropagation()
+  }
+  const [dialogType, setDialogType] = React.useState('')
+  const [dialogIndex, setDialogIndex] = React.useState(-1)
+  const [dialogList, setDialogList] = React.useState(false)
+  const [dialogRoles, setDialogRoles] = React.useState([] as Role[])
+  const bindRole = {
+    add(roles: Role[], i: number) {
+      setDialogType('add')
+      setDialogIndex(i)
+      setDialogRoles(roles)
+      setDialogList(true)
+    },
+    select(role: Role) {
+      setDialogList(false)
+      const i = dialogIndex
+      if (!rules[i]) {
+        return
+      }
+      if (dialogType === 'add') {
+        for (const e of rules[i].viewChannelList) {
+          if (e.id === role.id) {
+            message.info('Added')
+            return
+          }
+        }
+        rules[i].viewChannelList.push(role)
+        setRules([...rules])
+      } else if (dialogType === 'del') {
+        const index = rules[i].viewChannelList.findIndex((e) => e.id === role.id)
+        if (index !== -1) {
+          rules[i].viewChannelList.splice(index, 1)
+          setRules([...rules])
+        }
+      }
+    },
+    del(roles: Role[], i: number) {
+      setDialogType('del')
+      setDialogIndex(i)
+      setDialogRoles(roles)
+      setDialogList(true)
+    },
+  }
+  const formatColor = (num: number) => {
+    num >>>= 0
+    const r = (num & 0xff0000) >>> 16
+    const g = (num & 0xff00) >>> 8
+    const b = num & 0xff
+    // a = ((num & 0xff000000) >>> 24) / 255
+    const color = `rgb(${[r, g, b].join(',')})`
+    return color
   }
   return (
     <div id="page-channel-manage">
@@ -152,14 +195,16 @@ const Page: NextPage = () => {
                 <h4>View channel</h4>
                 <h5>Allows members to view this channel.</h5>
                 <div className="sea-operation-box">
-                  {viewChannel.map((e, i) => {
-                    return <SeaRole key={i} color={e.color} text={e.lv} />
+                  {e.viewChannelList.map((role) => {
+                    return (
+                      <SeaRole key={role.id} color={formatColor(role.color)} text={role.name} />
+                    )
                   })}
                   <div className="operation">
-                    <IconButton>
+                    <IconButton onClick={() => bindRole.add(roles, i)}>
                       <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => bindRole.del(e.viewChannelList, i)}>
                       <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
                     </IconButton>
                   </div>
@@ -195,6 +240,19 @@ const Page: NextPage = () => {
       <div className="sea-new-box">
         <Button onClick={bindRuleAdd}>+ Add a new rule</Button>
       </div>
+      <Dialog open={dialogList} onClose={() => setDialogList(false)}>
+        <DialogContent>
+          <List>
+            {dialogRoles.map((role: Role) => (
+              <ListItem key={role.id} disablePadding onClick={() => bindRole.select(role)}>
+                <ListItemButton>
+                  <SeaRole color={formatColor(role.color)} text={role.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
