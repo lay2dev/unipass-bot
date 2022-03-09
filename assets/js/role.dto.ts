@@ -33,10 +33,10 @@ export interface AssetRequirement {
 }
 
 export interface Role {
-  guild: string
-  id: string
-  name: string
-  color: number
+  readonly guild: string
+  readonly id: string
+  readonly name: string
+  readonly color: number
 }
 
 export interface Rule {
@@ -45,4 +45,20 @@ export interface Rule {
   uniPassRequirement: UniPassRequirement[]
   assetRequirement: AssetRequirement[]
   open: boolean
+}
+
+export interface Channel {
+  readonly guildId: string
+  readonly id: string
+  readonly name: string
+  readonly type: string
+  readonly createdTimestamp: string
+}
+
+export interface ChannelRule {
+  channel: Channel
+  ruleId: number
+  open: boolean
+  viewChannelList: Role[]
+  sendMessageList: Role[]
 }

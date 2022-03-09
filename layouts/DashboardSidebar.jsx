@@ -122,7 +122,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
         >
           <Box
             component="img"
-            src="/illustration_avatar.png"
+            src="/images/illustration_avatar.png"
             sx={{ width: 100, position: 'absolute', top: -50 }}
           />
 

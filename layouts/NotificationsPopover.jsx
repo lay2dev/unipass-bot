@@ -42,7 +42,7 @@ const NOTIFICATIONS = [
     id: faker.datatype.uuid(),
     title: faker.name.findName(),
     description: 'answered to your comment on the Minimal',
-    avatar: '/avatar2.jpg',
+    avatar: '/images/avatar2.jpg',
     type: 'friend_interactive',
     createdAt: sub(new Date(), { hours: 3, minutes: 30 }),
     isUnRead: true,

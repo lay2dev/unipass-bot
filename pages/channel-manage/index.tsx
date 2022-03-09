@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '../../assets/js/store'
 import { SeaSwitch, SeaRole, SeaIcon, SeaChannel } from '../../components'
@@ -14,26 +15,60 @@ import {
   AccordionDetails,
 } from '@mui/material'
 import api from '../../assets/js/api'
-import mock from './mock'
+import { ChannelRule, Channel, Role } from '../../assets/js/role.dto'
 
 const Page: NextPage = () => {
   const [state] = useStore()
-  const [channels, setChannels] = useState(mock)
-  // useEffect(() => {
-  //   api.get('/channels/' + state.server).then((res) => {
-  //     console.log('channels', res.data)
-  //     setChannels(res.data)
-  //   })
-  // }, [state.server])
+  const [channels, setChannels] = useState([] as Channel[])
+  const [roles, setRoles] = useState([] as Role[])
+  const [rules, setRules] = useState([] as ChannelRule[])
+  useEffect(() => {
+    api.get('/roles/' + state.server).then((res) => {
+      const roles = res.data
+      if (roles) {
+        console.log('roles', roles)
+        setRoles(roles)
+      }
+    })
+    api.get('/channels/' + state.server).then((res) => {
+      const channels = res.data
+      if (channels) {
+        console.log('channels', channels)
+        setChannels(res.data)
+      }
+    })
+    api.get('/channels/' + state.server + '/rule').then((res) => {
+      const rules = res.data
+      if (rules) {
+        console.log('rules', rules)
+        setRules(res.data)
+      }
+    })
+  }, [state.server])
 
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('🌊', event.target.checked)
   }
+  const bindRuleAdd = () => {
+    const channel = channels[0]
+    const rule = {
+      channel,
+      ruleId: 0,
+      open: true,
+      viewChannelList: [],
+      sendMessageList: [],
+    } as ChannelRule
+    rules.push(rule)
+    setRules([...rules])
+  }
   // channel select
-  const [channel, setChannel] = React.useState('UniPass')
-  const bindChannel = (event: SelectChangeEvent) => {
+  const bindChannel = (event: SelectChangeEvent, i: number) => {
     const v = event.target.value
-    setChannel(v)
+    const channel = channels.find((e) => e.id === v)
+    if (channel) {
+      rules[i].channel = channel
+      setRules([...rules])
+    }
   }
   const [viewChannel, setViewChannel] = React.useState([
     {
@@ -58,7 +93,7 @@ const Page: NextPage = () => {
   }
   return (
     <div id="page-channel-manage">
-      {channels.map((e, i) => (
+      {rules.map((e, i) => (
         <Accordion key={i} className="sea-box-one">
           <AccordionSummary
             expandIcon={<SeaIcon sx={{ fontSize: '32px' }} icon="ic:round-expand-more" />}
@@ -66,7 +101,7 @@ const Page: NextPage = () => {
             <div className="info">
               <div className="title">
                 <div className="sea-h3">Channel</div>
-                <SeaChannel name={e.name} />
+                <SeaChannel name={e.channel.name} />
                 <IconButton
                   className="delete"
                   color="error"
@@ -85,12 +120,12 @@ const Page: NextPage = () => {
               </div>
               <div className="tip-box">
                 <div className="one">
-                  <SeaIcon icon="icon-park-outline:message-one"></SeaIcon>
+                  <Image src="/images/view.svg" width={32} height={32} alt="view" />
                   <SeaRole color="#c4505e" text="UP Lv4" />
                   <SeaRole color="#e9c0a0" text="UP Lv3" />
                 </div>
                 <div className="one">
-                  <SeaIcon icon="icon-park-outline:message-privacy"></SeaIcon>
+                  <Image src="/images/no-words.svg" width={32} height={32} alt="no-words" />
                   <SeaRole color="#4fab9f" text="UP Lv1" />
                   <SeaRole color="#3b7669" text="UP Lv2" />
                 </div>
@@ -98,10 +133,18 @@ const Page: NextPage = () => {
             </div>
           </AccordionSummary>
           <AccordionDetails>
-            <div className="sea-h3">Set Channel</div>
-            <Select className="select" size="small" value={channel} onChange={bindChannel}>
-              <MenuItem value="UniPass"># UniPass</MenuItem>
-              <MenuItem value="Aven"># Aven</MenuItem>
+            <div className="sea-h3">Select Channel</div>
+            <Select
+              className="select"
+              size="small"
+              value={e.channel.id}
+              onChange={(event) => bindChannel(event, i)}
+            >
+              {channels.map((channel) => (
+                <MenuItem key={channel.id} value={channel.id}>
+                  {channel.name}
+                </MenuItem>
+              ))}
             </Select>
             <div className="sea-h3">Message manage</div>
             <Paper className="sea-paper" elevation={12}>
@@ -149,6 +192,9 @@ const Page: NextPage = () => {
           </AccordionDetails>
         </Accordion>
       ))}
+      <div className="sea-new-box">
+        <Button onClick={bindRuleAdd}>+ Add a new rule</Button>
+      </div>
     </div>
   )
 }

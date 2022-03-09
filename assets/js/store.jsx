@@ -8,7 +8,7 @@ const initState = {
     evmKeys: [],
     username: 'UniPass BOT',
     email: 'hi@mail.unipass.me',
-    photoURL: '/avatar.jpg',
+    photoURL: '/images/avatar.jpg',
     accessToken: '',
     refreshToken: '',
     discordUuid: '',

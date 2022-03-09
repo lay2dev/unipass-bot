@@ -13,7 +13,7 @@ Logo.propTypes = {
 export default function Logo({ sx }) {
   return (
     <Link href="/" passHref>
-      <Box component="img" src="/unipass.svg" sx={{ width: 40, height: 40, ...sx }} />
+      <Box component="img" src="/images/unipass.svg" sx={{ width: 40, height: 40, ...sx }} />
     </Link>
   )
 }
