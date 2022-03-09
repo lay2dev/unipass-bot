@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
-// import isEqual from 'lodash.isequal'
+import { isEqual, cloneDeep } from 'lodash'
 import {
   Button,
   IconButton,
@@ -38,12 +38,15 @@ const Page: NextPage = () => {
   const [state] = useStore()
   const [roles, setRoles] = useState([] as Role[])
   const [rules, setRules] = useState([] as Rule[])
+  const [rulesOld, setRulesOld] = useState([] as Rule[])
+
   useEffect(() => {
     api.get('/roles/' + state.server + '/rule').then((res) => {
       const rules = res.data
       if (rules) {
         console.log('rules', rules)
         setRules(rules)
+        setRulesOld(cloneDeep(rules))
       }
     })
     api.get('/roles/' + state.server).then((res) => {
@@ -187,6 +190,12 @@ const Page: NextPage = () => {
     rules[i].open = false
     setRules([...rules])
     bindSave(i)
+  }
+
+  const initDisabled = (i: number) => {
+    const a = rules[i]
+    const b = rulesOld[i]
+    return isEqual(a, b)
   }
   return (
     <div id="page-index">
@@ -355,6 +364,7 @@ const Page: NextPage = () => {
                     className="submit"
                     variant="contained"
                     color="secondary"
+                    disabled={initDisabled(i)}
                     onClick={() => bindSave(i)}
                   >
                     Save
