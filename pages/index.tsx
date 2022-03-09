@@ -1,6 +1,7 @@
 import { message } from 'antd'
 import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
+// import isEqual from 'lodash.isequal'
 import {
   Button,
   IconButton,
@@ -12,6 +13,11 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Typography,
 } from '@mui/material'
 import UP, { UPAuthMessage } from 'up-core-test'
@@ -48,8 +54,8 @@ const Page: NextPage = () => {
       }
     })
   }, [state.server])
-  const bindSave = async (rule: Rule, i: number) => {
-    console.log('rule', rule)
+  const bindSave = async (i: number) => {
+    const rule = rules[i]
     // sign
     const account = state.account
     const server = account.servers.find((e: { id: string }) => e.id === state.server)
@@ -70,9 +76,11 @@ const Page: NextPage = () => {
     })
     if (res.code === 2000) {
       rules[i] = res.data.ruleId
-      message.success('保存成功!')
+      message.success('Save Saved successfully!')
+    } else if (res.code === 5040) {
+      message.error(res.message)
     } else {
-      message.error('保存失败!')
+      message.error('Save failed!')
     }
   }
   const uniPassRequirementFormat = (e: UniPassRequirement) => {
@@ -135,9 +143,17 @@ const Page: NextPage = () => {
       setRules([...rules])
     }
   }
+  const [dialogIndex, setDialogIndex] = React.useState(-1)
+  const [dialogOn, setDialogOn] = React.useState(false)
+  const [dialogOff, setDialogOff] = React.useState(false)
   const bindOpen = (event: React.ChangeEvent<HTMLInputElement>, i: number) => {
+    setDialogIndex(i)
     const open = event.target.checked
-    rules[i].open = open
+    if (open) {
+      setDialogOn(true)
+    } else {
+      setDialogOff(true)
+    }
   }
   const bindRuleAdd = () => {
     const role = roles[0]
@@ -158,6 +174,20 @@ const Page: NextPage = () => {
       setRules([...rules])
     }
   }
+  const bindConfirmOn = () => {
+    setDialogOn(false)
+    const i = dialogIndex
+    rules[i].open = true
+    setRules([...rules])
+    bindSave(i)
+  }
+  const bindConfirmOff = () => {
+    setDialogOff(false)
+    const i = dialogIndex
+    rules[i].open = false
+    setRules([...rules])
+    bindSave(i)
+  }
   return (
     <div id="page-index">
       {rules.map((e: Rule, i) => {
@@ -176,7 +206,7 @@ const Page: NextPage = () => {
                     }}
                     className="switch"
                     onChange={(event) => bindOpen(event, i)}
-                    defaultChecked={e.open}
+                    checked={e.open}
                   />
                 </div>
                 <div className="tip-box">
@@ -325,9 +355,7 @@ const Page: NextPage = () => {
                     className="submit"
                     variant="contained"
                     color="secondary"
-                    onClick={() => {
-                      bindSave(e, i)
-                    }}
+                    onClick={() => bindSave(i)}
                   >
                     Save
                   </Button>
@@ -340,7 +368,28 @@ const Page: NextPage = () => {
       <div className="sea-new-box">
         <Button onClick={bindRuleAdd}>+ Add a new rule rule</Button>
       </div>
+      <Dialog open={dialogOn} onClose={() => setDialogOn(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to turn on this role assignment?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOn(false)}>Cancel</Button>
+          <Button onClick={bindConfirmOn}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={dialogOff} onClose={() => setDialogOff(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to turn off this role assignment?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOff(false)}>Cancel</Button>
+          <Button onClick={bindConfirmOff}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
+
 export default Page

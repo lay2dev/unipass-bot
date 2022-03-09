@@ -4,6 +4,7 @@ import UP, { UPAuthMessage } from 'up-core-test'
 import { useRouter } from 'next/router'
 import { useStore } from '../../assets/js/store'
 import api from '../../assets/js/api'
+import { message } from 'antd'
 
 const Page: NextPage = () => {
   const router = useRouter()
@@ -39,8 +40,13 @@ const Page: NextPage = () => {
         dispatch({ account })
         window.localStorage.setItem('UP-BOT', JSON.stringify(account))
         router.replace('/')
+      } else {
+        UP.disconnect()
       }
-    } catch (error) {}
+    } catch (error) {
+      message.error('This UniPass ID has not verified the Discord account, please verify it first.')
+      UP.disconnect()
+    }
   }
 
   return (
