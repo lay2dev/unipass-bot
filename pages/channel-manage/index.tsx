@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '../../assets/js/store'
+import { isEqual, cloneDeep } from 'lodash'
 import { SeaSwitch, SeaRole, SeaIcon, SeaChannel } from '../../components'
 import {
   Button,
@@ -14,7 +15,10 @@ import {
   AccordionSummary,
   AccordionDetails,
   Dialog,
+  DialogActions,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
   List,
   ListItem,
   ListItemButton,
@@ -23,12 +27,14 @@ import {
 import api from '../../assets/js/api'
 import { ChannelRule, Channel, Role } from '../../assets/js/role.dto'
 import { message } from 'antd'
+import UP, { UPAuthMessage } from 'up-core-test'
 
 const Page: NextPage = () => {
   const [state] = useStore()
   const [channels, setChannels] = useState([] as Channel[])
   const [roles, setRoles] = useState([] as Role[])
   const [rules, setRules] = useState([] as ChannelRule[])
+  const [rulesOld, setRulesOld] = useState([] as ChannelRule[])
   useEffect(() => {
     api.get('/roles/' + state.server).then((res) => {
       const roles = res.data
@@ -49,13 +55,11 @@ const Page: NextPage = () => {
       if (rules) {
         console.log('rules', rules)
         setRules(res.data)
+        setRulesOld(cloneDeep(rules))
       }
     })
   }, [state.server])
 
-  const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('🌊', event.target.checked)
-  }
   const bindRuleAdd = () => {
     const channel = channels[0]
     const rule = {
@@ -77,9 +81,7 @@ const Page: NextPage = () => {
       setRules([...rules])
     }
   }
-  const bindRuleDel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, i: number) => {
-    event.stopPropagation()
-  }
+  const [dialogDel, setDialogDel] = React.useState(false)
   const [dialogType, setDialogType] = React.useState('')
   const [dialogIndex, setDialogIndex] = React.useState(-1)
   const [dialogList, setDialogList] = React.useState(false)
@@ -189,6 +191,93 @@ const Page: NextPage = () => {
     }
     return list
   }
+  const bindRuleDel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, i: number) => {
+    event.stopPropagation()
+    setDialogIndex(i)
+    setDialogDel(true)
+  }
+  const bindConfirmDel = async () => {
+    setDialogDel(false)
+    const i = dialogIndex
+    const rule = rules[i]
+    if (!rule.ruleId) {
+      rules.splice(i, 1)
+      setRules([...rules])
+      return
+    }
+    const res = await api({
+      url: '/channels/' + state.server + '/rule',
+      method: 'delete',
+      data: {
+        id: rule.ruleId,
+      },
+    })
+    if (res.code === 2000) {
+      rules.splice(i, 1)
+      setRules([...rules])
+      message.success('Delete successfully!')
+    } else {
+      message.error('Delete failed!')
+    }
+  }
+  const bindSave = async (i: number) => {
+    const rule = rules[i]
+    // sign
+    const account = state.account
+    const server = account.servers.find((e: { id: string }) => e.id === state.server)
+    const timestamp = String(Date.now())
+    const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
+    const { sig, pubkey } = ret
+    const res = await api.post('/channels/rule', {
+      guildId: server.id,
+      id: rule.ruleId,
+      channelId: rule.channel.id,
+      viewChannel: rule.viewChannelList,
+      sendMessage: rule.sendMessageList,
+      open: rule.open,
+      key: pubkey,
+      sig,
+      raw: timestamp,
+    })
+    if (res.code === 2000) {
+      rules[i] = res.data.ruleId
+      message.success('Save Saved successfully!')
+    } else if (res.code === 5040) {
+      message.error(res.message)
+    } else {
+      message.error('Save failed!')
+    }
+  }
+  const initDisabled = (i: number) => {
+    const a = rules[i]
+    const b = rulesOld[i]
+    return isEqual(a, b)
+  }
+  const [dialogOn, setDialogOn] = React.useState(false)
+  const [dialogOff, setDialogOff] = React.useState(false)
+  const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>, i: number) => {
+    setDialogIndex(i)
+    const open = event.target.checked
+    if (open) {
+      setDialogOn(true)
+    } else {
+      setDialogOff(true)
+    }
+  }
+  const bindConfirmOn = () => {
+    setDialogOn(false)
+    const i = dialogIndex
+    rules[i].open = true
+    setRules([...rules])
+    bindSave(i)
+  }
+  const bindConfirmOff = () => {
+    setDialogOff(false)
+    const i = dialogIndex
+    rules[i].open = false
+    setRules([...rules])
+    bindSave(i)
+  }
   return (
     <div id="page-channel-manage">
       {rules.map((e, i) => (
@@ -208,12 +297,12 @@ const Page: NextPage = () => {
                   <SeaIcon icon="fluent:delete-24-filled" />
                 </IconButton>
                 <SeaSwitch
-                  className="switch"
                   onClick={(event) => {
                     event.stopPropagation()
                   }}
-                  onChange={bindSwitch}
-                  defaultChecked={true}
+                  className="switch"
+                  onChange={(event) => bindSwitch(event, i)}
+                  checked={e.open}
                 />
               </div>
               <div className="tip-box">
@@ -225,8 +314,6 @@ const Page: NextPage = () => {
                 </div>
                 <div className="one">
                   <Image src="/images/no-words.svg" width={32} height={32} alt="no-words" />
-                  {/* <SeaRole color="#4fab9f" text="UP Lv1" />
-                  <SeaRole color="#3b7669" text="UP Lv2" /> */}
                   {initNoWords(e.sendMessageList, e.viewChannelList).map((role) => (
                     <SeaRole key={role.id} color={formatColor(role.color)} text={role.name} />
                   ))}
@@ -299,7 +386,13 @@ const Page: NextPage = () => {
             </Paper>
 
             <div className="save">
-              <Button className="submit" variant="contained" color="secondary">
+              <Button
+                disabled={initDisabled(i)}
+                onClick={() => bindSave(i)}
+                className="submit"
+                variant="contained"
+                color="secondary"
+              >
                 Save
               </Button>
             </div>
@@ -321,6 +414,48 @@ const Page: NextPage = () => {
             ))}
           </List>
         </DialogContent>
+      </Dialog>
+      <Dialog open={dialogDel} onClose={() => setDialogDel(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to delete this rule?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setDialogDel(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmDel} color="error">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={dialogOn} onClose={() => setDialogOn(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to turn on this role assignment?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setDialogOn(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmOn}>
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={dialogOff} onClose={() => setDialogOff(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to turn off this role assignment?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setDialogOff(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmOff}>
+            Confirm
+          </Button>
+        </DialogActions>
       </Dialog>
     </div>
   )

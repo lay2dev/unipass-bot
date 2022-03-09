@@ -64,17 +64,16 @@ const Page: NextPage = () => {
     const timestamp = String(Date.now())
     const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
     const { sig, pubkey } = ret
-    const { uniPassRequirement, assetRequirement, open } = rule
     const res = await api.post('/roles/rule', {
       guildId: server.id,
       roleId: rule.role.id,
       id: rule.ruleId,
+      open: rule.open,
+      uniPassRequirement: rule.uniPassRequirement,
+      assetRequirement: rule.assetRequirement,
       key: pubkey,
       sig,
       raw: timestamp,
-      open,
-      uniPassRequirement,
-      assetRequirement,
     })
     if (res.code === 2000) {
       rules[i] = res.data.ruleId
@@ -148,7 +147,7 @@ const Page: NextPage = () => {
   const [dialogIndex, setDialogIndex] = React.useState(-1)
   const [dialogOn, setDialogOn] = React.useState(false)
   const [dialogOff, setDialogOff] = React.useState(false)
-  const bindOpen = (event: React.ChangeEvent<HTMLInputElement>, i: number) => {
+  const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>, i: number) => {
     setDialogIndex(i)
     const open = event.target.checked
     if (open) {
@@ -205,6 +204,11 @@ const Page: NextPage = () => {
     setDialogDel(false)
     const i = dialogIndex
     const rule = rules[i]
+    if (!rule.ruleId) {
+      rules.splice(i, 1)
+      setRules([...rules])
+      return
+    }
     const res = await api({
       url: '/roles/' + state.server + '/rule',
       method: 'delete',
@@ -244,7 +248,7 @@ const Page: NextPage = () => {
                       event.stopPropagation()
                     }}
                     className="switch"
-                    onChange={(event) => bindOpen(event, i)}
+                    onChange={(event) => bindSwitch(event, i)}
                     checked={e.open}
                   />
                 </div>
