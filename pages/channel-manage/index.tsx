@@ -89,40 +89,43 @@ const Page: NextPage = () => {
   const [dialogList, setDialogList] = React.useState(false)
   const [dialogRoles, setDialogRoles] = React.useState([] as Role[])
   const bindRole = {
-    add(roles: Role[], i: number) {
-      setDialogType('add')
+    viewAdd(roles: Role[], i: number) {
+      setDialogType('viewAdd')
+      setDialogIndex(i)
+      setDialogRoles(roles)
+      setDialogList(true)
+    },
+    viewDel(roles: Role[], i: number) {
+      setDialogType('viewDel')
       setDialogIndex(i)
       setDialogRoles(roles)
       setDialogList(true)
     },
     select(role: Role) {
-      setDialogList(false)
       const i = dialogIndex
       if (!rules[i]) {
         return
       }
-      if (dialogType === 'add') {
+      if (dialogType === 'viewAdd') {
         for (const e of rules[i].viewChannelList) {
           if (e.id === role.id) {
+            setDialogList(false)
             message.info('Added')
             return
           }
         }
         rules[i].viewChannelList.push(role)
         setRules([...rules])
-      } else if (dialogType === 'del') {
+      } else if (dialogType === 'viewDel') {
         const index = rules[i].viewChannelList.findIndex((e) => e.id === role.id)
         if (index !== -1) {
           rules[i].viewChannelList.splice(index, 1)
           setRules([...rules])
+          if (rules[i].viewChannelList.length === 0) {
+            setDialogList(false)
+          }
         }
       }
-    },
-    del(roles: Role[], i: number) {
-      setDialogType('del')
-      setDialogIndex(i)
-      setDialogRoles(roles)
-      setDialogList(true)
     },
   }
   const formatColor = (num: number) => {
@@ -201,10 +204,10 @@ const Page: NextPage = () => {
                     )
                   })}
                   <div className="operation">
-                    <IconButton onClick={() => bindRole.add(roles, i)}>
+                    <IconButton onClick={() => bindRole.viewAdd(roles, i)}>
                       <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
                     </IconButton>
-                    <IconButton onClick={() => bindRole.del(e.viewChannelList, i)}>
+                    <IconButton onClick={() => bindRole.viewDel(e.viewChannelList, i)}>
                       <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
                     </IconButton>
                   </div>
