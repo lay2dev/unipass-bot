@@ -17,26 +17,25 @@
         }
       }
       .tip-box {
-        padding: 20px;
         background: #e0e6ec;
         border-radius: 4px;
         list-style: auto;
         color: #7a8895;
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         margin-bottom: 16px;
         .one {
+          margin: 10px 16px;
           border-radius: 40px;
           display: flex;
           align-items: center;
+          flex-wrap: wrap;
           background: #ffffff83;
           padding: 12px 20px;
           .sea-role {
-            margin-left: 20px;
+            margin: 5px;
           }
-        }
-        .one + .one {
-          margin-left: 32px;
         }
       }
     }

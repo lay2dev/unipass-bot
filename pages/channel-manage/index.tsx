@@ -15,13 +15,9 @@ import {
   AccordionDetails,
   Dialog,
   DialogContent,
-  DialogContentText,
-  DialogTitle,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
-  ListItemText,
 } from '@mui/material'
 
 import api from '../../assets/js/api'
@@ -92,7 +88,16 @@ const Page: NextPage = () => {
     viewAdd(roles: Role[], i: number) {
       setDialogType('viewAdd')
       setDialogIndex(i)
-      setDialogRoles(roles)
+      setDialogRoles(
+        roles.filter((e) => {
+          for (const role of rules[i].viewChannelList) {
+            if (role.id === e.id) {
+              return false
+            }
+          }
+          return true
+        }),
+      )
       setDialogList(true)
     },
     viewDel(roles: Role[], i: number) {
@@ -101,7 +106,19 @@ const Page: NextPage = () => {
       setDialogRoles(roles)
       setDialogList(true)
     },
-    select(role: Role) {
+    sendAdd(roles: Role[], i: number) {
+      setDialogType('sendAdd')
+      setDialogIndex(i)
+      setDialogRoles(roles)
+      setDialogList(true)
+    },
+    sendDel(roles: Role[], i: number) {
+      setDialogType('sendDel')
+      setDialogIndex(i)
+      setDialogRoles(roles)
+      setDialogList(true)
+    },
+    select(role: Role, index: number) {
       const i = dialogIndex
       if (!rules[i]) {
         return
@@ -116,12 +133,37 @@ const Page: NextPage = () => {
         }
         rules[i].viewChannelList.push(role)
         setRules([...rules])
+        // remove added
+        dialogRoles.splice(index, 1)
+        setDialogRoles(dialogRoles)
+        if (dialogRoles.length === 0) {
+          setDialogList(false)
+        }
       } else if (dialogType === 'viewDel') {
         const index = rules[i].viewChannelList.findIndex((e) => e.id === role.id)
         if (index !== -1) {
           rules[i].viewChannelList.splice(index, 1)
           setRules([...rules])
           if (rules[i].viewChannelList.length === 0) {
+            setDialogList(false)
+          }
+        }
+      } else if (dialogType === 'sendAdd') {
+        for (const e of rules[i].sendMessageList) {
+          if (e.id === role.id) {
+            setDialogList(false)
+            message.info('Added')
+            return
+          }
+        }
+        rules[i].sendMessageList.push(role)
+        setRules([...rules])
+      } else if (dialogType === 'sendDel') {
+        const index = rules[i].sendMessageList.findIndex((e) => e.id === role.id)
+        if (index !== -1) {
+          rules[i].sendMessageList.splice(index, 1)
+          setRules([...rules])
+          if (rules[i].sendMessageList.length === 0) {
             setDialogList(false)
           }
         }
@@ -136,6 +178,16 @@ const Page: NextPage = () => {
     // a = ((num & 0xff000000) >>> 24) / 255
     const color = `rgb(${[r, g, b].join(',')})`
     return color
+  }
+  const initNoWords = (sendList: Role[], viewList: Role[]) => {
+    const list = []
+    for (const role of viewList) {
+      const index = sendList.findIndex((e) => e.id === role.id)
+      if (index === -1) {
+        list.push(role)
+      }
+    }
+    return list
   }
   return (
     <div id="page-channel-manage">
@@ -167,13 +219,17 @@ const Page: NextPage = () => {
               <div className="tip-box">
                 <div className="one">
                   <Image src="/images/view.svg" width={32} height={32} alt="view" />
-                  <SeaRole color="#c4505e" text="UP Lv4" />
-                  <SeaRole color="#e9c0a0" text="UP Lv3" />
+                  {e.viewChannelList.map((role) => (
+                    <SeaRole key={role.id} color={formatColor(role.color)} text={role.name} />
+                  ))}
                 </div>
                 <div className="one">
                   <Image src="/images/no-words.svg" width={32} height={32} alt="no-words" />
-                  <SeaRole color="#4fab9f" text="UP Lv1" />
-                  <SeaRole color="#3b7669" text="UP Lv2" />
+                  {/* <SeaRole color="#4fab9f" text="UP Lv1" />
+                  <SeaRole color="#3b7669" text="UP Lv2" /> */}
+                  {initNoWords(e.sendMessageList, e.viewChannelList).map((role) => (
+                    <SeaRole key={role.id} color={formatColor(role.color)} text={role.name} />
+                  ))}
                 </div>
               </div>
             </div>
@@ -207,9 +263,11 @@ const Page: NextPage = () => {
                     <IconButton onClick={() => bindRole.viewAdd(roles, i)}>
                       <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
                     </IconButton>
-                    <IconButton onClick={() => bindRole.viewDel(e.viewChannelList, i)}>
-                      <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
-                    </IconButton>
+                    {!!e.viewChannelList.length && (
+                      <IconButton onClick={() => bindRole.viewDel(e.viewChannelList, i)}>
+                        <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
+                      </IconButton>
+                    )}
                   </div>
                 </div>
               </div>
@@ -219,19 +277,27 @@ const Page: NextPage = () => {
                 <h4>Send message</h4>
                 <h5>Allow those members to publish their own message.</h5>
                 <div className="sea-operation-box">
-                  <SeaRole color="#4fab9f" text="UP Lv1" />
-                  <SeaRole color="#3b7669" text="UP Lv2" />
+                  {e.sendMessageList.map((role) => {
+                    return (
+                      <SeaRole key={role.id} color={formatColor(role.color)} text={role.name} />
+                    )
+                  })}
                   <div className="operation">
-                    <IconButton>
-                      <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
-                    </IconButton>
-                    <IconButton>
-                      <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
-                    </IconButton>
+                    {!!e.viewChannelList.length && (
+                      <IconButton onClick={() => bindRole.sendAdd(e.viewChannelList, i)}>
+                        <SeaIcon icon="fluent:add-circle-16-regular"></SeaIcon>
+                      </IconButton>
+                    )}
+                    {!!e.sendMessageList.length && (
+                      <IconButton onClick={() => bindRole.sendDel(e.sendMessageList, i)}>
+                        <SeaIcon icon="fluent:subtract-circle-16-regular"></SeaIcon>
+                      </IconButton>
+                    )}
                   </div>
                 </div>
               </div>
             </Paper>
+
             <div className="save">
               <Button className="submit" variant="contained" color="secondary">
                 Save
@@ -246,8 +312,8 @@ const Page: NextPage = () => {
       <Dialog open={dialogList} onClose={() => setDialogList(false)}>
         <DialogContent>
           <List>
-            {dialogRoles.map((role: Role) => (
-              <ListItem key={role.id} disablePadding onClick={() => bindRole.select(role)}>
+            {dialogRoles.map((role: Role, i) => (
+              <ListItem key={role.id} disablePadding onClick={() => bindRole.select(role, i)}>
                 <ListItemButton>
                   <SeaRole color={formatColor(role.color)} text={role.name} />
                 </ListItemButton>
