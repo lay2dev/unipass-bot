@@ -12,7 +12,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Typography,
 } from '@mui/material'
 import api from '../../assets/js/api'
 
@@ -58,7 +57,7 @@ const Page: NextPage = () => {
         <AccordionSummary
           expandIcon={<SeaIcon sx={{ fontSize: '32px' }} icon="ic:round-expand-more" />}
         >
-          <Typography className="info">
+          <div className="info">
             <div className="title">
               <div className="sea-h3">Channel</div>
               <SeaChannel name="UniPass" />
@@ -83,7 +82,7 @@ const Page: NextPage = () => {
                 <SeaRole color="#3b7669" text="UP Lv2" />
               </div>
             </div>
-          </Typography>
+          </div>
         </AccordionSummary>
         <AccordionDetails>
           <div className="sea-h3">Set Channel</div>

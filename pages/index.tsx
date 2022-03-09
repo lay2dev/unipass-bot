@@ -18,7 +18,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Typography,
 } from '@mui/material'
 import UP, { UPAuthMessage } from 'up-core-test'
 import { SeaSwitch, SeaRole, SeaIcon } from '../components'
@@ -229,7 +228,7 @@ const Page: NextPage = () => {
             <AccordionSummary
               expandIcon={<SeaIcon sx={{ fontSize: '32px' }} icon="ic:round-expand-more" />}
             >
-              <Typography className="info">
+              <div className="info">
                 <div className="title">
                   <div className="sea-h3">Role</div>
                   <SeaRole color={formatColor(e.role?.color)} text={e.role?.name} />
@@ -259,147 +258,145 @@ const Page: NextPage = () => {
                     ))}
                   </ul>
                 </div>
-              </Typography>
+              </div>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                <div className="sea-h3">Select Role</div>
-                <Select size="small" value={e.role.id} onChange={(event) => bindRole(event, i)}>
-                  {roles.map((role) => (
-                    <MenuItem key={role.id} value={role.id}>
-                      <SeaRole color={formatColor(role.color)} text={role.name} />
-                    </MenuItem>
-                  ))}
-                </Select>
-                <div className="sea-h3">Set Requirement</div>
-                {e.uniPassRequirement.length > 0 &&
-                  e.uniPassRequirement.map((e, i2) => (
-                    <Paper key={i2} className="sea-paper rule-one" elevation={12}>
-                      <div className="left">
-                        <h4>UniPass requirement</h4>
-                        <div className="sea-operation-box">
-                          <Select size="small" defaultValue="Level" disabled>
-                            <MenuItem value="Level">Level</MenuItem>
-                          </Select>
-                          <Select
-                            size="small"
-                            value={e.level.range}
-                            onChange={(event) => {
-                              e.level.range = Number(event.target.value)
-                              setRules([...rules])
-                            }}
-                          >
-                            <MenuItem value={0}>{'≥'}</MenuItem>
-                            <MenuItem value={1}>{'≤'}</MenuItem>
-                            <MenuItem value={2}>{'='}</MenuItem>
-                          </Select>
-                          <Select
-                            size="small"
-                            defaultValue={e.level.level}
-                            onChange={(event) => {
-                              e.level.level = Number(event.target.value)
-                              setRules([...rules])
-                            }}
-                          >
-                            {[0, 1, 2, 3, 4, 5, 6].map((lv) => (
-                              <MenuItem key={lv} value={lv}>
-                                Lv{lv}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </div>
+              <div className="sea-h3">Select Role</div>
+              <Select size="small" value={e.role.id} onChange={(event) => bindRole(event, i)}>
+                {roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    <SeaRole color={formatColor(role.color)} text={role.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+              <div className="sea-h3">Set Requirement</div>
+              {e.uniPassRequirement.length > 0 &&
+                e.uniPassRequirement.map((e, i2) => (
+                  <Paper key={i2} className="sea-paper rule-one" elevation={12}>
+                    <div className="left">
+                      <h4>UniPass requirement</h4>
+                      <div className="sea-operation-box">
+                        <Select size="small" defaultValue="Level" disabled>
+                          <MenuItem value="Level">Level</MenuItem>
+                        </Select>
+                        <Select
+                          size="small"
+                          value={e.level.range}
+                          onChange={(event) => {
+                            e.level.range = Number(event.target.value)
+                            setRules([...rules])
+                          }}
+                        >
+                          <MenuItem value={0}>{'≥'}</MenuItem>
+                          <MenuItem value={1}>{'≤'}</MenuItem>
+                          <MenuItem value={2}>{'='}</MenuItem>
+                        </Select>
+                        <Select
+                          size="small"
+                          defaultValue={e.level.level}
+                          onChange={(event) => {
+                            e.level.level = Number(event.target.value)
+                            setRules([...rules])
+                          }}
+                        >
+                          {[0, 1, 2, 3, 4, 5, 6].map((lv) => (
+                            <MenuItem key={lv} value={lv}>
+                              Lv{lv}
+                            </MenuItem>
+                          ))}
+                        </Select>
                       </div>
-                      <IconButton
-                        className="right delete"
-                        color="error"
-                        onClick={() => bindDel('unipass', i, i2)}
-                      >
-                        <SeaIcon icon="fluent:delete-24-filled" />
-                      </IconButton>
-                    </Paper>
-                  ))}
-                {e.assetRequirement.length > 0 &&
-                  e.assetRequirement.map((asset, i2) => (
-                    <Paper key={i2} className="sea-paper rule-one" elevation={12}>
-                      <div className="left">
-                        <h4>Asset requirement</h4>
-                        <h5>Contract address</h5>
-                        <div className="sea-operation-box">
-                          <Select size="small" defaultValue={asset.chain} disabled>
-                            <MenuItem value={Chain.eth}>Ethereum</MenuItem>
-                          </Select>
-                          <TextField
-                            size="small"
-                            defaultValue={asset.address}
-                            onChange={(event) => {
-                              asset.address = event.target.value
-                              setRules([...rules])
-                            }}
-                            variant="outlined"
-                            placeholder="Contract address"
-                          />
-                          <Button onClick={() => message.warn('NFT 弹窗，正在开发')}>NFT</Button>
-                        </div>
-                        <h5>Amount</h5>
-                        <div className="sea-operation-box">
-                          <Select size="small" defaultValue="Amount" disabled>
-                            <MenuItem value="Amount">Amount</MenuItem>
-                          </Select>
-                          <Select
-                            size="small"
-                            value={asset.range}
-                            onChange={(event) => {
-                              asset.range = Number(event.target.value)
-                              setRules([...rules])
-                            }}
-                          >
-                            <MenuItem value={0}>{'≥'}</MenuItem>
-                            <MenuItem value={1}>{'≤'}</MenuItem>
-                            <MenuItem value={2}>{'='}</MenuItem>
-                          </Select>
-                          <TextField
-                            size="small"
-                            defaultValue={asset.amount}
-                            onChange={(event) => {
-                              asset.amount = Number(event.target.value)
-                              setRules([...rules])
-                            }}
-                            type="number"
-                          />
-                        </div>
+                    </div>
+                    <IconButton
+                      className="right delete"
+                      color="error"
+                      onClick={() => bindDel('unipass', i, i2)}
+                    >
+                      <SeaIcon icon="fluent:delete-24-filled" />
+                    </IconButton>
+                  </Paper>
+                ))}
+              {e.assetRequirement.length > 0 &&
+                e.assetRequirement.map((asset, i2) => (
+                  <Paper key={i2} className="sea-paper rule-one" elevation={12}>
+                    <div className="left">
+                      <h4>Asset requirement</h4>
+                      <h5>Contract address</h5>
+                      <div className="sea-operation-box">
+                        <Select size="small" defaultValue={asset.chain} disabled>
+                          <MenuItem value={Chain.eth}>Ethereum</MenuItem>
+                        </Select>
+                        <TextField
+                          size="small"
+                          defaultValue={asset.address}
+                          onChange={(event) => {
+                            asset.address = event.target.value
+                            setRules([...rules])
+                          }}
+                          variant="outlined"
+                          placeholder="Contract address"
+                        />
+                        <Button onClick={() => message.warn('NFT 弹窗，正在开发')}>NFT</Button>
                       </div>
-                      <IconButton
-                        className="right delete"
-                        color="error"
-                        onClick={() => bindDel('asset', i, i2)}
-                      >
-                        <SeaIcon icon="fluent:delete-24-filled" />
-                      </IconButton>
-                    </Paper>
-                  ))}
-                <div className="new-requirement">
-                  <h4>Add a new</h4>
-                  <div className="sea-operation-box">
-                    <Button variant="outlined" onClick={() => bindAdd('unipass', i)}>
-                      UniPass
-                    </Button>
-                    <Button variant="contained" onClick={() => bindAdd('asset', i)}>
-                      Asset
-                    </Button>
-                  </div>
-                </div>
-                <div className="save">
-                  <Button
-                    className="submit"
-                    variant="contained"
-                    color="secondary"
-                    disabled={initDisabled(i)}
-                    onClick={() => bindSave(i)}
-                  >
-                    Save
+                      <h5>Amount</h5>
+                      <div className="sea-operation-box">
+                        <Select size="small" defaultValue="Amount" disabled>
+                          <MenuItem value="Amount">Amount</MenuItem>
+                        </Select>
+                        <Select
+                          size="small"
+                          value={asset.range}
+                          onChange={(event) => {
+                            asset.range = Number(event.target.value)
+                            setRules([...rules])
+                          }}
+                        >
+                          <MenuItem value={0}>{'≥'}</MenuItem>
+                          <MenuItem value={1}>{'≤'}</MenuItem>
+                          <MenuItem value={2}>{'='}</MenuItem>
+                        </Select>
+                        <TextField
+                          size="small"
+                          defaultValue={asset.amount}
+                          onChange={(event) => {
+                            asset.amount = Number(event.target.value)
+                            setRules([...rules])
+                          }}
+                          type="number"
+                        />
+                      </div>
+                    </div>
+                    <IconButton
+                      className="right delete"
+                      color="error"
+                      onClick={() => bindDel('asset', i, i2)}
+                    >
+                      <SeaIcon icon="fluent:delete-24-filled" />
+                    </IconButton>
+                  </Paper>
+                ))}
+              <div className="new-requirement">
+                <h4>Add a new</h4>
+                <div className="sea-operation-box">
+                  <Button variant="outlined" onClick={() => bindAdd('unipass', i)}>
+                    UniPass
+                  </Button>
+                  <Button variant="contained" onClick={() => bindAdd('asset', i)}>
+                    Asset
                   </Button>
                 </div>
-              </Typography>
+              </div>
+              <div className="save">
+                <Button
+                  className="submit"
+                  variant="contained"
+                  color="secondary"
+                  disabled={initDisabled(i)}
+                  onClick={() => bindSave(i)}
+                >
+                  Save
+                </Button>
+              </div>
             </AccordionDetails>
           </Accordion>
         )
