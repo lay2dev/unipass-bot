@@ -191,11 +191,35 @@ const Page: NextPage = () => {
     setRules([...rules])
     bindSave(i)
   }
-
   const initDisabled = (i: number) => {
     const a = rules[i]
     const b = rulesOld[i]
     return isEqual(a, b)
+  }
+  const [dialogDel, setDialogDel] = React.useState(false)
+  const bindRuleDel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, i: number) => {
+    event.stopPropagation()
+    setDialogIndex(i)
+    setDialogDel(true)
+  }
+  const bindConfirmDel = async () => {
+    setDialogDel(false)
+    const i = dialogIndex
+    const rule = rules[i]
+    const res = await api({
+      url: '/roles/' + state.server + '/rule',
+      method: 'delete',
+      data: {
+        id: rule.ruleId,
+      },
+    })
+    if (res.code === 2000) {
+      rules.splice(i, 1)
+      setRules([...rules])
+      message.success('Delete successfully!')
+    } else {
+      message.error('Delete failed!')
+    }
   }
   return (
     <div id="page-index">
@@ -207,8 +231,15 @@ const Page: NextPage = () => {
             >
               <Typography className="info">
                 <div className="title">
-                  <div className="sea-h3">Rule</div>
+                  <div className="sea-h3">Role</div>
                   <SeaRole color={formatColor(e.role?.color)} text={e.role?.name} />
+                  <IconButton
+                    className="delete"
+                    color="error"
+                    onClick={(event) => bindRuleDel(event, i)}
+                  >
+                    <SeaIcon icon="fluent:delete-24-filled" />
+                  </IconButton>
                   <SeaSwitch
                     onClick={(event) => {
                       event.stopPropagation()
@@ -232,7 +263,7 @@ const Page: NextPage = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                <div className="sea-h3">Set Role</div>
+                <div className="sea-h3">Select Role</div>
                 <Select size="small" value={e.role.id} onChange={(event) => bindRole(event, i)}>
                   {roles.map((role) => (
                     <MenuItem key={role.id} value={role.id}>
@@ -280,7 +311,6 @@ const Page: NextPage = () => {
                       </div>
                       <IconButton
                         className="right delete"
-                        aria-label="delete"
                         color="error"
                         onClick={() => bindDel('unipass', i, i2)}
                       >
@@ -340,7 +370,6 @@ const Page: NextPage = () => {
                       </div>
                       <IconButton
                         className="right delete"
-                        aria-label="delete"
                         color="error"
                         onClick={() => bindDel('asset', i, i2)}
                       >
@@ -349,13 +378,13 @@ const Page: NextPage = () => {
                     </Paper>
                   ))}
                 <div className="new-requirement">
-                  <h4>Add a new requirement</h4>
+                  <h4>Add a new</h4>
                   <div className="sea-operation-box">
                     <Button variant="outlined" onClick={() => bindAdd('unipass', i)}>
-                      UniPass requirement
+                      UniPass
                     </Button>
                     <Button variant="contained" onClick={() => bindAdd('asset', i)}>
-                      Asset requirement
+                      Asset
                     </Button>
                   </div>
                 </div>
@@ -376,16 +405,34 @@ const Page: NextPage = () => {
         )
       })}
       <div className="sea-new-box">
-        <Button onClick={bindRuleAdd}>+ Add a new rule rule</Button>
+        <Button onClick={bindRuleAdd}>+ Add a new rule</Button>
       </div>
+      <Dialog open={dialogDel} onClose={() => setDialogDel(false)}>
+        <DialogTitle>Prompt</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Confirm to delete this rule?</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setDialogDel(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmDel} color="error">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Dialog open={dialogOn} onClose={() => setDialogOn(false)}>
         <DialogTitle>Prompt</DialogTitle>
         <DialogContent>
           <DialogContentText>Confirm to turn on this role assignment?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOn(false)}>Cancel</Button>
-          <Button onClick={bindConfirmOn}>Confirm</Button>
+          <Button variant="outlined" onClick={() => setDialogOn(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmOn}>
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
       <Dialog open={dialogOff} onClose={() => setDialogOff(false)}>
@@ -394,8 +441,12 @@ const Page: NextPage = () => {
           <DialogContentText>Confirm to turn off this role assignment?</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setDialogOff(false)}>Cancel</Button>
-          <Button onClick={bindConfirmOff}>Confirm</Button>
+          <Button variant="outlined" onClick={() => setDialogOff(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmOff}>
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

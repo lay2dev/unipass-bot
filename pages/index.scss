@@ -11,11 +11,14 @@
       width: 100%;
       display: flex;
       align-items: center;
-      h3 {
+      .sea-h3 {
         margin-right: 20px;
       }
-      .switch {
+      .delete {
         margin-left: auto;
+      }
+      .switch {
+        margin-left: 20px;
       }
     }
     .tip-box {
