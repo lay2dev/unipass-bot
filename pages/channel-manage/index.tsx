@@ -205,11 +205,18 @@ const Page: NextPage = () => {
       setRules([...rules])
       return
     }
+    const account = state.account
+    const timestamp = String(Date.now())
+    const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
+    const { sig, pubkey } = ret
     const res = await api({
       url: '/channels/' + state.server + '/rule',
       method: 'delete',
       data: {
         id: rule.ruleId,
+        key: pubkey,
+        sig,
+        raw: timestamp,
       },
     })
     if (res.code === 2000) {
@@ -232,15 +239,16 @@ const Page: NextPage = () => {
       guildId: server.id,
       id: rule.ruleId,
       channelId: rule.channel.id,
-      viewChannel: rule.viewChannelList,
-      sendMessage: rule.sendMessageList,
+      viewChannel: rule.viewChannelList.map((e) => e.id),
+      sendMessage: rule.sendMessageList.map((e) => e.id),
       open: rule.open,
       key: pubkey,
       sig,
       raw: timestamp,
     })
     if (res.code === 2000) {
-      rules[i] = res.data.ruleId
+      rules[i].ruleId = res.data.ruleId
+      rulesOld[i].ruleId = res.data.ruleId
       message.success('Save Saved successfully!')
     } else if (res.code === 5040) {
       message.error(res.message)
@@ -288,7 +296,7 @@ const Page: NextPage = () => {
             <div className="info">
               <div className="title">
                 <div className="sea-h3">Channel</div>
-                <SeaChannel name={e.channel.name} />
+                <SeaChannel name={e.channel?.name} />
                 <IconButton
                   className="delete"
                   color="error"
@@ -326,7 +334,7 @@ const Page: NextPage = () => {
             <Select
               className="select"
               size="small"
-              value={e.channel.id}
+              value={e.channel?.id}
               onChange={(event) => bindChannel(event, i)}
             >
               {channels.map((channel) => (

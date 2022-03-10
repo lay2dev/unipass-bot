@@ -76,7 +76,8 @@ const Page: NextPage = () => {
       raw: timestamp,
     })
     if (res.code === 2000) {
-      rules[i] = res.data.ruleId
+      rules[i].ruleId = res.data.ruleId
+      rulesOld[i].ruleId = res.data.ruleId
       message.success('Save Saved successfully!')
     } else if (res.code === 5040) {
       message.error(res.message)
@@ -209,11 +210,18 @@ const Page: NextPage = () => {
       setRules([...rules])
       return
     }
+    const account = state.account
+    const timestamp = String(Date.now())
+    const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
+    const { sig, pubkey } = ret
     const res = await api({
       url: '/roles/' + state.server + '/rule',
       method: 'delete',
       data: {
         id: rule.ruleId,
+        key: pubkey,
+        sig,
+        raw: timestamp,
       },
     })
     if (res.code === 2000) {
