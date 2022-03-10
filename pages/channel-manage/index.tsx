@@ -36,28 +36,30 @@ const Page: NextPage = () => {
   const [rules, setRules] = useState([] as ChannelRule[])
   const [rulesOld, setRulesOld] = useState([] as ChannelRule[])
   useEffect(() => {
-    api.get('/roles/' + state.server).then((res) => {
-      const roles = res.data
-      if (roles) {
-        console.log('roles', roles)
-        setRoles(roles)
-      }
-    })
-    api.get('/channels/' + state.server).then((res) => {
-      const channels = res.data
-      if (channels) {
-        console.log('channels', channels)
-        setChannels(res.data)
-      }
-    })
-    api.get('/channels/' + state.server + '/rule').then((res) => {
-      const rules = res.data
-      if (rules) {
-        console.log('rules', rules)
-        setRules(res.data)
-        setRulesOld(cloneDeep(rules))
-      }
-    })
+    if (state.server) {
+      api.get('/roles/' + state.server).then((res) => {
+        const roles = res.data
+        if (roles) {
+          console.log('roles', roles)
+          setRoles(roles)
+        }
+      })
+      api.get('/channels/' + state.server).then((res) => {
+        const channels = res.data
+        if (channels) {
+          console.log('channels', channels)
+          setChannels(res.data)
+        }
+      })
+      api.get('/channels/' + state.server + '/rule').then((res) => {
+        const rules = res.data
+        if (rules) {
+          console.log('rules', rules)
+          setRules(res.data)
+          setRulesOld(cloneDeep(rules))
+        }
+      })
+    }
   }, [state.server])
 
   const bindRuleAdd = () => {

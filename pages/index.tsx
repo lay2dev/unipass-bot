@@ -40,21 +40,23 @@ const Page: NextPage = () => {
   const [rulesOld, setRulesOld] = useState([] as Rule[])
 
   useEffect(() => {
-    api.get('/roles/' + state.server + '/rule').then((res) => {
-      const rules = res.data
-      if (rules) {
-        console.log('rules', rules)
-        setRules(rules)
-        setRulesOld(cloneDeep(rules))
-      }
-    })
-    api.get('/roles/' + state.server).then((res) => {
-      const roles = res.data
-      if (roles) {
-        console.log('roles', roles)
-        setRoles(roles)
-      }
-    })
+    if (state.server) {
+      api.get('/roles/' + state.server + '/rule').then((res) => {
+        const rules = res.data
+        if (rules) {
+          console.log('rules', rules)
+          setRules(rules)
+          setRulesOld(cloneDeep(rules))
+        }
+      })
+      api.get('/roles/' + state.server).then((res) => {
+        const roles = res.data
+        if (roles) {
+          console.log('roles', roles)
+          setRoles(roles)
+        }
+      })
+    }
   }, [state.server])
   const bindSave = async (i: number) => {
     const rule = rules[i]

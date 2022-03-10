@@ -36,6 +36,26 @@ api.interceptors.response.use(
     return response.data
   },
   function (error) {
+    const code = error.response.status
+    if (code === 401) {
+      // token 过期
+      const { authorization: accessToken, refreshtoken: refreshToken } = error.response.headers
+      api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
+      api.defaults.headers.common['refreshToken'] = refreshToken
+      error.response.config.headers['Authorization'] = 'Bearer ' + accessToken
+      error.response.config.headers['refreshToken'] = refreshToken
+      try {
+        const accountJSON = window.localStorage.getItem('UP-BOT') || ''
+        const account = JSON.parse(accountJSON)
+        account.refreshToken = refreshToken
+        account.accessToken = accessToken
+        window.localStorage.setItem('UP-BOT', JSON.stringify(account))
+      } catch (error) {}
+      return api.request(error.response.config)
+    } else if (code === 403) {
+      window.localStorage.removeItem('UP-BOT')
+      window.location.href = '/login'
+    }
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
     // ElMessage.error('请求失败')

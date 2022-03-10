@@ -25,6 +25,7 @@ const Page: NextPage = () => {
       const { discordUuid, accessToken, refreshToken } = res.data
       if (accessToken) {
         api.defaults.headers.common['Authorization'] = 'Bearer ' + accessToken
+        api.defaults.headers.common['refreshToken'] = refreshToken
         const res = await api.get('/guilds')
         const servers = res.data
         const account = {

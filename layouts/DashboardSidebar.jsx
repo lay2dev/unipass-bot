@@ -54,6 +54,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       dispatch({ account, server: server.id })
       if (account.accessToken) {
         api.defaults.headers.common['Authorization'] = 'Bearer ' + account.accessToken
+        api.defaults.headers.common['refreshToken'] = account.refreshToken
         if (router.route === '/login') {
           router.replace('/')
         }
