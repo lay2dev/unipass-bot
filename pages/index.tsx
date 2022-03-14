@@ -1,5 +1,9 @@
 import { message } from 'antd'
 import type { NextPage } from 'next'
+// eslint-disable-next-line
+import Color from 'color'
+// eslint-disable-next-line
+import { TwitterPicker } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { isEqual, cloneDeep } from 'lodash'
 import {
@@ -150,6 +154,9 @@ const Page: NextPage = () => {
   const [dialogIndex, setDialogIndex] = React.useState(-1)
   const [dialogOn, setDialogOn] = React.useState(false)
   const [dialogOff, setDialogOff] = React.useState(false)
+  const [dialogAdd, setDialogAdd] = React.useState(false)
+  const [dialogAddName, setDialogAddName] = React.useState('')
+  const [dialogAddColor, setDialogAddColor] = React.useState('')
   const bindSwitch = (event: React.ChangeEvent<HTMLInputElement>, i: number) => {
     setDialogIndex(i)
     const open = event.target.checked
@@ -172,7 +179,12 @@ const Page: NextPage = () => {
     setRules([...rules])
   }
   const bindRole = (event: SelectChangeEvent, i: number) => {
-    const role = roles.find((e) => event.target.value === e.id)
+    const v = event.target.value
+    if (v === '+') {
+      setDialogAdd(true)
+      return
+    }
+    const role = roles.find((e) => v === e.id)
     if (role) {
       rules[i].role = role
       setRules([...rules])
@@ -234,6 +246,23 @@ const Page: NextPage = () => {
       message.error('Delete failed!')
     }
   }
+  const bindConfirmAdd = async () => {
+    const account = state.account
+    const server = account.servers.find((e: { id: string }) => e.id === state.server)
+    const res = await api.post('/roles/add', {
+      guildId: server.id,
+      roleName: dialogAddName,
+      color: dialogAddColor,
+    })
+    if (res.data?.id) {
+      message.success('Role add successfully')
+      roles.push(res.data)
+      setRoles(roles)
+    } else {
+      message.error('Role add filed')
+    }
+    setDialogAdd(false)
+  }
   return (
     <div id="page-index">
       {rules.map((e: Rule, i) => {
@@ -282,6 +311,9 @@ const Page: NextPage = () => {
                     <SeaRole color={formatColor(role.color)} text={role.name} />
                   </MenuItem>
                 ))}
+                <MenuItem value="+">
+                  <SeaRole color="black" text="+ Add a new role" hideIcon />
+                </MenuItem>
               </Select>
               <div className="sea-h3">Set Requirement</div>
               {e.uniPassRequirement.length > 0 &&
@@ -457,6 +489,40 @@ const Page: NextPage = () => {
           </Button>
           <Button variant="contained" onClick={bindConfirmOff}>
             Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={dialogAdd} onClose={() => setDialogAdd(false)}>
+        <DialogTitle>Add a new role</DialogTitle>
+        <DialogContent>
+          <SeaRole color={dialogAddColor} text={dialogAddName || 'Role Name'}></SeaRole>
+        </DialogContent>
+        <DialogContent>
+          <h4>Role name</h4>
+          <TextField
+            size="small"
+            variant="outlined"
+            onBlur={(event) => {
+              setDialogAddName(event.target.value)
+            }}
+          ></TextField>
+        </DialogContent>
+        <DialogContent>
+          <h4>Role color</h4>
+          <TwitterPicker
+            color={dialogAddColor}
+            triangle="hide"
+            onChange={(color: { hex: string }) => {
+              setDialogAddColor(color.hex)
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={() => setDialogAdd(false)}>
+            Cancel
+          </Button>
+          <Button variant="contained" onClick={bindConfirmAdd}>
+            Add
           </Button>
         </DialogActions>
       </Dialog>

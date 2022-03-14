@@ -11,7 +11,7 @@ const Page: NextPage = () => {
   const [state, dispatch] = useStore()
   const connect = async () => {
     try {
-      const account = await UP.connect({ email: false, evmKeys: true })
+      const account = await UP.connect({ email: true, evmKeys: true })
       const timestamp = String(Date.now())
       const ret = await UP.authorize(new UPAuthMessage('PLAIN_MSG', account.username, timestamp))
       const { sig, pubkey } = ret

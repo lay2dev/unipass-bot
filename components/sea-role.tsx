@@ -1,6 +1,11 @@
 import { SeaIcon } from '../components'
 import { SxProps, Theme, Button } from '@mui/material'
-export default function Page(props: { color: string; text: string; sx?: SxProps<Theme> }) {
+export default function Page(props: {
+  color: string
+  text: string
+  sx?: SxProps<Theme>
+  hideIcon?: boolean
+}) {
   return (
     <Button
       className="sea-role"
@@ -14,7 +19,7 @@ export default function Page(props: { color: string; text: string; sx?: SxProps<
       }}
       color="inherit"
     >
-      <SeaIcon icon="akar-icons:circle-fill" />
+      {!props.hideIcon && <SeaIcon icon="akar-icons:circle-fill" />}
       {props.text}
     </Button>
   )

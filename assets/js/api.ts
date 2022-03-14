@@ -31,7 +31,7 @@ api.interceptors.response.use(
     return response.data
   },
   function (error) {
-    const code = error.response.status
+    const code = error?.response?.status
     if (code === 401) {
       // token Expired
       const { authorization: accessToken, refreshtoken: refreshToken } = error.response.headers
