@@ -1,8 +1,6 @@
 import { message } from 'antd'
 import type { NextPage } from 'next'
 // eslint-disable-next-line
-import Color from 'color'
-// eslint-disable-next-line
 import { TwitterPicker } from 'react-color'
 import React, { useEffect, useState } from 'react'
 import { isEqual, cloneDeep } from 'lodash'
